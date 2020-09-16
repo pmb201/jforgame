@@ -40,6 +40,16 @@ public class MinaSocketServer implements ServerNode {
 
 	private SocketAcceptor acceptor;
 
+	public MinaSocketServer(MessageDispatcher messageDispatcher){
+		this.messageDispatcher = messageDispatcher;
+	}
+
+	public MinaSocketServer(){
+
+	}
+
+	private MessageDispatcher messageDispatcher;
+
 	/**
 	 * start Mina serversocket
 	 * @throws Exception
@@ -62,7 +72,7 @@ public class MinaSocketServer implements ServerNode {
 		filterChain.addLast("msgTrace", new MessageTraceFilter());
 		filterChain.addLast("flood", new FloodFilter());
 		//指定业务逻辑处理器
-		acceptor.setHandler(new ServerSocketIoHandler(new MessageDispatcher()));
+		acceptor.setHandler(new ServerSocketIoHandler(messageDispatcher));
 		//设置端口号
 		acceptor.setDefaultLocalAddress(new InetSocketAddress(serverPort));
 		//启动监听

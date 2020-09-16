@@ -3,14 +3,14 @@
 <proxool-config>
 	<proxool>
 		<alias>data</alias>
-		<driver-url>jdbc:mysql://127.0.0.1:3306/game_data_001</driver-url>
+		<driver-url>jdbc:mysql://xiyoutest.mysql.rds.aliyuncs.com:3820/game_data_test</driver-url>
 		<driver-class>com.mysql.cj.jdbc.Driver</driver-class>
 		<driver-properties>
 			<property name="characterEncoding" value="utf-8" />
 			<property name="useUnicode" value="true" />
 			<property name="serverTimezone" value="UTC" />
-			<property name="user" value="root" />
-			<property name="password" value="123456" />
+			<property name="user" value="developer_test1" />
+			<property name="password" value="hXRJR!lxT@es3FPYt5ZD" />
 		</driver-properties>
 		<!--5分钟检查一下该数据库连接是否有用，没用就创建一个 -->
 		<house-keeping-sleep-time>300000</house-keeping-sleep-time>
@@ -31,14 +31,14 @@
 
 	<proxool>
 		<alias>user</alias>
-		<driver-url>jdbc:mysql://127.0.0.1:3306/game_user_001</driver-url>
+		<driver-url>jdbc:mysql://xiyoutest.mysql.rds.aliyuncs.com:3820/game_data_test</driver-url>
 		<driver-class>com.mysql.cj.jdbc.Driver</driver-class>
 		<driver-properties>
 			<property name="characterEncoding" value="utf-8" />
 			<property name="useUnicode" value="true" />
 			<property name="serverTimezone" value="UTC" />
-			<property name="user" value="root" />
-			<property name="password" value="123456" />
+			<property name="user" value="developer_test1" />
+			<property name="password" value="hXRJR!lxT@es3FPYt5ZD" />
 		</driver-properties>
 		<!--5分钟检查一下该数据库连接是否有用，没用就创建一个 -->
 		<house-keeping-sleep-time>300000</house-keeping-sleep-time>

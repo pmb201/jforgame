@@ -14,7 +14,7 @@ public class NetGateKeeper {
 	}
 
 	public void openProcotol(int messageId) {
-		forbidProcotols.add(messageId);
+		forbidProcotols.remove(messageId);
 	}
 
 	public void closeProcotol(int messageId) {

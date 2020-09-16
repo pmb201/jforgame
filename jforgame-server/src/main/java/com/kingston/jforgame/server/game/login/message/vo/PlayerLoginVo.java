@@ -1,7 +1,9 @@
 package com.kingston.jforgame.server.game.login.message.vo;
 
 import com.baidu.bjf.remoting.protobuf.annotation.Protobuf;
+import com.baidu.bjf.remoting.protobuf.annotation.ProtobufClass;
 
+@ProtobufClass
 public class PlayerLoginVo {
 	
 	@Protobuf

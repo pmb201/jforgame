@@ -32,6 +32,7 @@ public class IoEventHandler extends ChannelInboundHandlerAdapter {
 			ctx.channel().close();
 			logger.error("Duplicate session,IP=[{}]", ChannelUtils.getIp(channel));
 		}
+		logger.info("客户端连接上来了： {}", ChannelUtils.getIp(channel));
 		IdSession userSession = ChannelUtils.getSessionBy(channel);
 		messageDispatcher.onSessionCreated(userSession);
 	}
@@ -49,6 +50,7 @@ public class IoEventHandler extends ChannelInboundHandlerAdapter {
 	@Override
 	public void channelInactive(ChannelHandlerContext ctx) throws Exception {
 		Channel channel = ctx.channel();
+		logger.info("客户端断开了连接： {}", ChannelUtils.getIp(channel));
 		IdSession userSession = ChannelUtils.getSessionBy(channel);
 		messageDispatcher.onSessionClosed(userSession);
 	}

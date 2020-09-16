@@ -7,6 +7,8 @@ import com.kingston.jforgame.socket.IdSession;
 import com.kingston.jforgame.socket.message.Message;
 
 import io.netty.channel.Channel;
+import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelFutureListener;
 
 public class NettySession implements IdSession {
 	
@@ -23,7 +25,18 @@ public class NettySession implements IdSession {
 
 	@Override
 	public void sendPacket(Message packet) {
-		channel.writeAndFlush(packet);
+		ChannelFuture cf = channel.writeAndFlush(packet);
+		//添加ChannelFutureListener以便在写操作完成后接收通知
+		cf.addListener((ChannelFutureListener) future -> {
+			//写操作完成，并没有错误发生
+			if (future.isSuccess()){
+				System.out.println("write successful");
+			}else{
+				//记录错误
+				System.out.println("write error");
+				future.cause().printStackTrace();
+			}
+		});
 	}
 
 	@Override

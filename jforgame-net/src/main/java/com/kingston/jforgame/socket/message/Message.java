@@ -1,5 +1,6 @@
 package com.kingston.jforgame.socket.message;
 
+import com.baidu.bjf.remoting.protobuf.annotation.ProtobufClass;
 import com.kingston.jforgame.socket.annotation.MessageMeta;
 
 /**

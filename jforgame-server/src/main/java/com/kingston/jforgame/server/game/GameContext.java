@@ -1,9 +1,12 @@
 package com.kingston.jforgame.server.game;
 
+import com.kingston.jforgame.server.doctor.HotswapManager;
+import com.kingston.jforgame.server.doctor.Person;
 import com.kingston.jforgame.server.game.accout.entity.AccountManager;
 import com.kingston.jforgame.server.game.chat.ChatManager;
 import com.kingston.jforgame.server.game.gm.GmManager;
 import com.kingston.jforgame.server.game.login.LoginManager;
+import com.kingston.jforgame.server.game.person.PersonManager;
 import com.kingston.jforgame.server.game.player.PlayerManager;
 import com.kingston.jforgame.server.game.skill.SkillManager;
 
@@ -48,6 +51,14 @@ public class GameContext {
     public static ChatManager getChatManager() {
         return chatManager;
     }
+
+    private static PersonManager personManager = new PersonManager();
+
+    public static PersonManager getPersonManager(){return personManager;}
+
+    private static HotswapManager hotswapManager = HotswapManager.INSTANCE;
+
+    public static HotswapManager getHotswapManager(){return hotswapManager;}
 
 
 }

@@ -2,6 +2,7 @@ package com.kingston.jforgame.socket.combine;
 
 import com.baidu.bjf.remoting.protobuf.FieldType;
 import com.baidu.bjf.remoting.protobuf.annotation.Protobuf;
+import com.baidu.bjf.remoting.protobuf.annotation.ProtobufClass;
 import com.kingston.jforgame.socket.codec.IMessageDecoder;
 import com.kingston.jforgame.socket.codec.IMessageEncoder;
 import com.kingston.jforgame.socket.codec.SerializerHelper;
@@ -11,7 +12,7 @@ import com.kingston.jforgame.socket.message.Message;
  * full message unit
  * @author kingston
  */
-public class Packet {
+public class Packet{
 
 	@Protobuf(order = 10)
 	private int module;
@@ -42,5 +43,9 @@ public class Packet {
 
 		return msgEncoder.readMessage((short)packet.module, (byte)packet.cmd, packet.body);
 	}
+
+	public int getModule(){return module;}
+
+	public int getCmd(){return cmd;}
 
 }

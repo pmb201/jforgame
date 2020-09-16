@@ -25,9 +25,12 @@ public interface Modules {
 	int SKILL = 105;
 	/** 聊天 */
 	int CHAT = 106;
+	/** person */
+	int PERSON = 108;
 
 	// ------------------跨服业务功能模块（501开始）---------------------
 	/** 跨服天梯 */
 	int LADDER = 501;
+
 
 }

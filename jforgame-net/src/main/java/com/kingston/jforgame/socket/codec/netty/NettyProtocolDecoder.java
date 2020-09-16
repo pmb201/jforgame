@@ -11,6 +11,7 @@ import com.kingston.jforgame.socket.message.Message;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
+import io.netty.util.CharsetUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,15 +26,16 @@ public class NettyProtocolDecoder extends ByteToMessageDecoder {
     }
 
     @Override
-    protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
+    protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out){
         if (in.readableBytes() < 4) {
             return;
         }
         IMessageDecoder msgDecoder = SerializerHelper.getInstance().getDecoder();
         in.markReaderIndex();
         // ----------------消息协议格式-------------------------
-        // packetLength | moduleId | cmd | body
-        // int short short byte[]
+        // packetLength | moduleId | cmd | version | datetime | signatureLength | signature | body
+        // int short byte int long string byte[]
+
         int length = in.readInt();
         if (length > maxReceiveBytes) {
             logger.error("单包长度[{}]过大，断开链接", length);
@@ -46,9 +48,15 @@ public class NettyProtocolDecoder extends ByteToMessageDecoder {
             return;
         }
         // 消息元信息常量3表示消息body前面的两个字段，一个short表示module，一个byte表示cmd,
-        final int metaSize = 3;
         short moduleId = in.readShort();
         byte cmd = in.readByte();
+        int version = in.readInt();
+        long datetime = in.readLong();
+        int signatureLength = in.readInt();
+        CharSequence sequence = in.readCharSequence(signatureLength, CharsetUtil.UTF_8);
+        System.out.println(sequence.toString());
+
+        final int metaSize = 3 + 4 + 8 + 4 + signatureLength ;
         byte[] body = new byte[length - metaSize];
         in.readBytes(body);
         Message msg = msgDecoder.readMessage(moduleId, cmd, body);

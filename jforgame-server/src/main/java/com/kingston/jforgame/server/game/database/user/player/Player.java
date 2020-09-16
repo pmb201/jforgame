@@ -3,6 +3,7 @@ package com.kingston.jforgame.server.game.database.user.player;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 import org.apache.mina.core.session.IoSession;
 
@@ -21,6 +22,7 @@ import com.kingston.jforgame.socket.task.Distributable;
  * @author kingston
  */
 @Entity
+@Table(name = "user_player")
 public class Player extends BaseEntity implements Distributable {
 
 	private static final long serialVersionUID = 8913056963732639062L;

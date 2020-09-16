@@ -43,7 +43,7 @@ public class LoginManager {
 				players.add(vo);
 			}
 		}
-		
+
 		ResAccountLogin loginMessage = new ResAccountLogin();
 		loginMessage.setPlayers(players);
 		MessagePusher.pushMessage(session, loginMessage);
@@ -53,7 +53,7 @@ public class LoginManager {
 			combineMessage.addMessage(new ResPlayerEnterScene());
 			combineMessage.addMessage(ResGmResult.buildSuccResult("执行gm成功"));
 			MessagePusher.pushMessage(session, combineMessage);
-		} 
+		}
 	}
 
 	/**

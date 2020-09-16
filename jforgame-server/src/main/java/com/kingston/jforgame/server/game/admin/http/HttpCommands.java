@@ -14,5 +14,9 @@ public final class HttpCommands {
 	public static final int KICK_PLAYER = 3;
 	/** 功能开关，线上紧急关功能修bug ^_^ */
 	public static final int FUNC_SWITCH = 4;
+	/** 热部署类 */
+	public static final int HOT_SWAP_CLASS = 5;
+	/** 热部署目录 */
+	public static final int HOT_SWAP_PATH = 6;
 
 }

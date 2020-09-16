@@ -25,6 +25,10 @@ public class ServerConfig {
 	/** 服务器端口 */
 	@Element(required = true)
 	private int serverPort;
+
+	/** 服务器端口 */
+	@Element(required = true)
+	private int webSocketServerPort;
 	/** 客户端封包最大字节数 */
 	@Element(required = true)
 	private int maxReceiveBytes;
@@ -149,5 +153,13 @@ public class ServerConfig {
 
 	public void setMaxReceiveBytes(int maxReceiveBytes) {
 		this.maxReceiveBytes = maxReceiveBytes;
+	}
+
+	public int getWebSocketServerPort() {
+		return webSocketServerPort;
+	}
+
+	public void setWebSocketServerPort(int webSocketServerPort) {
+		this.webSocketServerPort = webSocketServerPort;
 	}
 }

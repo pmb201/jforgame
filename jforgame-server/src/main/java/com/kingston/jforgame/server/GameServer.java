@@ -7,7 +7,10 @@ import javax.management.ObjectName;
 
 import com.kingston.jforgame.server.game.GameContext;
 import com.kingston.jforgame.server.listener.ListenerManager;
+import com.kingston.jforgame.server.net.MessageDispatcher;
+import com.kingston.jforgame.server.net.mina.MinaSocketServer;
 import com.kingston.jforgame.server.net.netty.NettySocketServer;
+import com.kingston.jforgame.server.net.netty.NettyWebSocketServer;
 import org.apache.commons.lang3.time.StopWatch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,7 +27,6 @@ import com.kingston.jforgame.server.game.core.SystemParameters;
 import com.kingston.jforgame.server.game.database.config.ConfigDataPool;
 import com.kingston.jforgame.server.monitor.jmx.GameMonitor;
 import com.kingston.jforgame.server.monitor.jmx.GameMonitorMBean;
-import com.kingston.jforgame.server.net.mina.MinaSocketServer;
 import com.kingston.jforgame.server.redis.RedisCluster;
 import com.kingston.jforgame.socket.ServerNode;
 import com.kingston.jforgame.socket.message.MessageFactory;
@@ -37,6 +39,8 @@ public class GameServer {
 	private static GameServer gameServer = new GameServer();
 
 	private ServerNode socketServer;
+
+	private ServerNode webSocketServer;
 
 	private ServerNode httpServer;
 
@@ -100,9 +104,11 @@ public class GameServer {
 			crossServer.start();
 		}
 		// 启动socket服务
-		socketServer = new MinaSocketServer();
-//		socketServer = new NettySocketServer(config.getMaxReceiveBytes());
-		socketServer.start();
+		MessageDispatcher messageDispatcher = new MessageDispatcher();
+		//socketServer = new MinaSocketServer(messageDispatcher);
+		webSocketServer = new NettyWebSocketServer(config.getMaxReceiveBytes(),messageDispatcher);
+		//socketServer.start();
+		webSocketServer.start();
 		// 启动http服务
 		httpServer = new HttpServer();
 		httpServer.start();
@@ -131,7 +137,8 @@ public class GameServer {
 		StopWatch stopWatch = new StopWatch();
 		stopWatch.start();
 		// 各种业务逻辑的关闭写在这里。。。
-		socketServer.shutdown();
+		//socketServer.shutdown();
+		webSocketServer.shutdown();
 		httpServer.shutdown();
 		if (crossServer != null) {
 			crossServer.shutdown();

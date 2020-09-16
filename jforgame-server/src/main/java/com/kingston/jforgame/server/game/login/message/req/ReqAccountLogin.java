@@ -1,6 +1,7 @@
 package com.kingston.jforgame.server.game.login.message.req;
 
 import com.baidu.bjf.remoting.protobuf.annotation.Protobuf;
+import com.baidu.bjf.remoting.protobuf.annotation.ProtobufClass;
 import com.kingston.jforgame.server.game.Modules;
 import com.kingston.jforgame.server.game.login.LoginDataPool;
 import com.kingston.jforgame.socket.annotation.MessageMeta;
@@ -10,6 +11,7 @@ import com.kingston.jforgame.socket.message.Message;
  * 请求－账号登录
  * @author kingston
  */
+@ProtobufClass
 @MessageMeta(module=Modules.LOGIN, cmd=LoginDataPool.REQ_LOGIN)
 public class ReqAccountLogin extends Message {
 	
