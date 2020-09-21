@@ -22,6 +22,8 @@ public class MatchHttpTest {
 	public void httpRquest() throws IOException {
 		AbstractMatchMessage response = MatchHttpUtil.submit(new Req_F2M_HeatBeat());
 
+
+
 		System.err.println("收到响应<<<<<<<<<" + response);
 	}
 }

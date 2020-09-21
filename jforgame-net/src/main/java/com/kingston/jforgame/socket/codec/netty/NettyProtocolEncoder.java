@@ -1,9 +1,6 @@
 package com.kingston.jforgame.socket.codec.netty;
 
-import io.netty.handler.codec.MessageToMessageEncoder;
-import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
 import io.netty.util.CharsetUtil;
-import javassist.bytecode.ByteArray;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,8 +29,7 @@ public class NettyProtocolEncoder extends MessageToByteEncoder<Message> {
 
 		try {
 			// 消息元信息常量3表示消息body前面的两个字段，一个short表示module，一个byte表示cmd,
-			String signature = "askjhdjksadhfkjjh";
-			final int metaSize = 19 + signature.getBytes(CharsetUtil.UTF_8).length;
+			final int metaSize = 3;
 			IMessageEncoder msgEncoder = SerializerHelper.getInstance().getEncoder();
 			byte[] body = msgEncoder.writeMessageBody(message);
 			//消息内容长度
@@ -42,14 +38,6 @@ public class NettyProtocolEncoder extends MessageToByteEncoder<Message> {
 			out.writeShort(module);
 			// 写入cmd类型
 			out.writeByte(cmd);
-			// 写入version
-			out.writeInt(1);
-			//写入时间戳
-			out.writeLong(System.currentTimeMillis());
-			//写入签名长度
-			out.writeInt(signature.getBytes(CharsetUtil.UTF_8).length);
-			//写入签名
-			out.writeCharSequence(signature.subSequence(0,signature.length()),CharsetUtil.UTF_8);
 			//写入消息体
 			out.writeBytes(body);
 			//标记交给下一个编码器处理

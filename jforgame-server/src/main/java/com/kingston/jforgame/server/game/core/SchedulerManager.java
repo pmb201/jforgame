@@ -35,9 +35,9 @@ public class SchedulerManager {
 	}
 	
 	/**
-	 * 
+	 * 执行
 	 * @param command
-	 * @param initialDelay 毫秒数
+	 * @param initialDelay 延迟多久执行
 	 * @param period 毫秒数
 	 * @return
 	 */
@@ -45,6 +45,18 @@ public class SchedulerManager {
             long initialDelay, long period) {
     	return service.scheduleAtFixedRate(command, initialDelay, period, TimeUnit.MILLISECONDS);
     }
+
+	/**
+	 *
+	 * @param command
+	 * @param initialDelay 毫秒数
+	 * @param period 毫秒数
+	 * @return
+	 */
+	public ScheduledFuture<?> scheduleWithFixedDelay(Runnable command,
+												  long initialDelay, long period) {
+		return service.scheduleWithFixedDelay(command, initialDelay, period, TimeUnit.MILLISECONDS);
+	}
 	
 
 }

@@ -1,18 +1,15 @@
 package com.kingston.jforgame.server.net.netty;
 
-import com.google.protobuf.MessageLite;
-import com.google.protobuf.MessageLiteOrBuilder;
-import com.kingston.jforgame.common.net.model.PacketProto;
+
 import com.kingston.jforgame.server.ServerConfig;
 import com.kingston.jforgame.server.net.MessageDispatcher;
 
 import com.kingston.jforgame.socket.ServerNode;
 
-import com.kingston.jforgame.socket.codec.IMessageEncoder;
-import com.kingston.jforgame.socket.codec.SerializerHelper;
+
 import com.kingston.jforgame.socket.codec.netty.NettyProtocolDecoder;
 import com.kingston.jforgame.socket.codec.netty.NettyProtocolEncoder;
-import com.kingston.jforgame.socket.message.Message;
+
 import com.kingston.jforgame.socket.netty.IoEventHandler;
 
 import io.netty.bootstrap.ServerBootstrap;
@@ -22,7 +19,6 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 
-import io.netty.handler.codec.FixedLengthFrameDecoder;
 import io.netty.handler.codec.MessageToMessageDecoder;
 import io.netty.handler.codec.MessageToMessageEncoder;
 import io.netty.handler.codec.http.HttpObjectAggregator;
@@ -33,14 +29,12 @@ import io.netty.handler.codec.http.websocketx.WebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketFrameAggregator;
 import io.netty.handler.codec.http.websocketx.WebSocketServerProtocolHandler;
 import io.netty.handler.codec.http.websocketx.extensions.compression.WebSocketServerCompressionHandler;
-import io.netty.handler.codec.protobuf.ProtobufDecoder;
 
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 import io.netty.handler.stream.ChunkedWriteHandler;
 
 import io.netty.handler.timeout.IdleStateHandler;
-import org.apache.mina.filter.codec.ProtocolCodecFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -48,7 +42,6 @@ import org.slf4j.LoggerFactory;
 import java.net.InetSocketAddress;
 import java.util.List;
 
-import static io.netty.buffer.Unpooled.wrappedBuffer;
 
 /**
  * @Author puMengBin
@@ -88,15 +81,10 @@ public class NettyWebSocketServer implements ServerNode {
             bootstrap.handler(new LoggingHandler(LogLevel.DEBUG));
 
             // 绑定端口，同步等待成功
-            ChannelFuture f = bootstrap.bind(new InetSocketAddress(serverPort)).sync();
-            f.channel().closeFuture().sync();
-        } finally {
-            Runtime.getRuntime().addShutdownHook(new Thread() {
-                @Override
-                public void run() {
-                    shutdown();
-                }
-            });
+            ChannelFuture f = bootstrap.bind(new InetSocketAddress(serverPort));
+            //f.channel().closeFuture().sync();
+        }catch (Exception e){
+            e.printStackTrace();
         }
 
     }

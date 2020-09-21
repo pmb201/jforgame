@@ -21,8 +21,4 @@ public class DateUtil {
 		return sdf.get().format(date);
 	}
 
-	public static void main(String[] args) throws Exception {
-		System.err.println(format(new Date()));
-	}
-
 }
