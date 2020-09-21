@@ -120,16 +120,6 @@ public class LimitedCacheMap<K, V> {
         }
     }
 
-    public static void main(String[] args) throws Exception {
-        LimitedCacheMap<Integer, Integer> map = new LimitedCacheMap(3, 1500);
-        map.put(1, 1);
-
-        System.out.println("-----");
-        Thread.sleep(1200);
-
-
-        System.out.println(map.get(1));
-    }
 
     @Override
     public String toString() {

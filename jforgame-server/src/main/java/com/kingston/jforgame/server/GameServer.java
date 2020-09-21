@@ -1,11 +1,16 @@
 package com.kingston.jforgame.server;
 
+import java.io.IOException;
 import java.lang.management.ManagementFactory;
 
 import javax.management.MBeanServer;
 import javax.management.ObjectName;
 
+import com.kingston.jforgame.server.cross.core.match.MatchHttpUtil;
 import com.kingston.jforgame.server.game.GameContext;
+import com.kingston.jforgame.server.game.chat.message.ReqPrivateChat;
+import com.kingston.jforgame.server.game.core.SchedulerManager;
+import com.kingston.jforgame.server.game.cross.ladder.message.Req_F2M_HeatBeat;
 import com.kingston.jforgame.server.listener.ListenerManager;
 import com.kingston.jforgame.server.net.MessageDispatcher;
 import com.kingston.jforgame.server.net.mina.MinaSocketServer;
@@ -105,13 +110,19 @@ public class GameServer {
 		}
 		// 启动socket服务
 		MessageDispatcher messageDispatcher = new MessageDispatcher();
-		//socketServer = new MinaSocketServer(messageDispatcher);
+		socketServer = new MinaSocketServer(messageDispatcher);
+		socketServer.start();
+
+		//启动websocket服务
 		webSocketServer = new NettyWebSocketServer(config.getMaxReceiveBytes(),messageDispatcher);
-		//socketServer.start();
 		webSocketServer.start();
+
 		// 启动http服务
 		httpServer = new HttpServer();
 		httpServer.start();
+		//添加匹配服心跳任务
+		startMachHeatBeat(config);
+
 	}
 
 	private void loadSystemRecords() throws Exception {
@@ -122,6 +133,21 @@ public class GameServer {
 			logger.info("启动时每日重置");
 			SystemParameters.update("dailyResetTimestamp", now);
 		}
+	}
+
+	private void startMachHeatBeat(ServerConfig config){
+		Runnable task = () -> {
+			try {
+				Req_F2M_HeatBeat heatBeat = new Req_F2M_HeatBeat();
+				heatBeat.setInetIp(config.getInetAddr());
+				heatBeat.setPort(config.getWebSocketServerPort());
+				heatBeat.setServerId(config.getServerId());
+				MatchHttpUtil.submit(heatBeat);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		};
+		SchedulerManager.getInstance().scheduleAtFixedRate(task,0,58 * 1000);
 	}
 
 	private void gameLogicInit() {
@@ -137,7 +163,7 @@ public class GameServer {
 		StopWatch stopWatch = new StopWatch();
 		stopWatch.start();
 		// 各种业务逻辑的关闭写在这里。。。
-		//socketServer.shutdown();
+		socketServer.shutdown();
 		webSocketServer.shutdown();
 		httpServer.shutdown();
 		if (crossServer != null) {

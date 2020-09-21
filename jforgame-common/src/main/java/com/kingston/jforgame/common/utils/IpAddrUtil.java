@@ -37,9 +37,5 @@ public class IpAddrUtil {
 			return localip;
 		}
 	}
-	
-	public static void main(String[] args) throws Exception {
-		System.out.println(getInnetIp());
-	}
 
 }

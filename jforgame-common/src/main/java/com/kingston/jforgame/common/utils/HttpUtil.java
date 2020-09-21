@@ -98,12 +98,4 @@ public class HttpUtil {
 		}
 	}
 
-
-	public static void main(String[] args) throws Exception {
-		String param = buildUrlParam("a",3,"b",4);
-		String url = "http://www.baidu.com" + "?" + param;
-		System.err.println(url);
-		System.err.println(get(url));
-	}
-
 }

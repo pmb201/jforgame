@@ -10,8 +10,11 @@ import io.netty.channel.ChannelPromise;
 import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
 import io.netty.util.AttributeKey;
 import io.netty.util.CharsetUtil;
+import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.tomcat.util.security.MD5Encoder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import sun.security.provider.MD5;
 
 import java.nio.ByteBuffer;
 
@@ -37,15 +40,18 @@ public class ProtoEncoder extends ChannelOutboundHandlerAdapter {
             byte[] data = msgEncoder.writeMessageBody(packet);
 
             String signature = "askjhdjksadhfkjjh";
+            String version = "01.00.01";
 
-            ByteBuf buf = ctx.alloc().buffer(data.length + 23 + signature.getBytes(CharsetUtil.UTF_8).length);
-            buf.writeInt(data.length + 19 + signature.getBytes(CharsetUtil.UTF_8).length);
+            signature = DigestUtils.md5Hex("101101.00.011600508157704");
+
+            ByteBuf buf = ctx.alloc().buffer(data.length + 7 );//23 + signature.getBytes(CharsetUtil.UTF_8).length);
+            buf.writeInt(data.length + 3); //+ 19 + signature.getBytes(CharsetUtil.UTF_8).length);
             buf.writeShort(packet.getModule());
             buf.writeByte(packet.getCmd());
-            buf.writeInt(1);
-            buf.writeLong(System.currentTimeMillis());
-            buf.writeInt(signature.getBytes(CharsetUtil.UTF_8).length);
-            buf.writeCharSequence(signature.subSequence(0,signature.length()),CharsetUtil.UTF_8);
+            //buf.writeInt(1);
+            //buf.writeLong(System.currentTimeMillis());
+            //buf.writeInt(signature.getBytes(CharsetUtil.UTF_8).length);
+            //buf.writeCharSequence(signature.subSequence(0,signature.length()),CharsetUtil.UTF_8);
             buf.writeBytes(data);
             msg = new BinaryWebSocketFrame(buf);
             /*if (checkSum == null) {
@@ -86,5 +92,10 @@ public class ProtoEncoder extends ChannelOutboundHandlerAdapter {
         super.write(ctx, msg, promise);
     }
 
+
+    public static void main(String[] args) {
+        String signature = DigestUtils.md5Hex("101101.00.011600508157704");
+        System.out.println(signature.equals("4a23f3ad0f0e472b0624bca9869a195a"));
+    }
 
 }

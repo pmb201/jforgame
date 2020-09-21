@@ -28,6 +28,22 @@
 			</cron>
 		</trigger>
 
+		<job>
+			<name>DailyResetJob</name>
+			<group>DEFAULT</group>
+			<job-class>com.kingston.jforgame.server.game.cronjob.DailyResetJob</job-class>
+		</job>
+		<trigger>
+			<cron>
+				<name>DailyResetJobTrigger</name>
+				<group>DEFAULT</group>
+				<job-name>DailyResetJob</job-name>
+				<job-group>DEFAULT</job-group>
+				<cron-expression>0 0 5 * * ?</cron-expression>
+				<!-- 每天05:00运行 -->
+			</cron>
+		</trigger>
+
 	</schedule>
 
 

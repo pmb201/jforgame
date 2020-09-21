@@ -8,6 +8,7 @@ import java.util.Set;
 
 import com.baidu.bjf.remoting.protobuf.ProtobufIDLGenerator;
 import com.kingston.jforgame.common.utils.ClassScanner;
+import com.kingston.jforgame.server.game.login.message.res.ResAccountLogin;
 import com.kingston.jforgame.socket.message.Message;
 
 /**
@@ -17,7 +18,7 @@ import com.kingston.jforgame.socket.message.Message;
 public class ProtoFileGenerator {
 
 	public static void main(String[] args) {
-		String rootPath = "com.kingston.jforgame.server.game.login.message";
+		String rootPath = "com.kingston.jforgame.server.game.player.message";
 		Set<Class<?>> messages = ClassScanner.listAllSubclasses(rootPath, Message.class);
 		writeProtoFile(messages);
 	}

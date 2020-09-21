@@ -122,22 +122,6 @@ public class Timer {
         }
     }
 
-    public static void main(String[] args) {
-        Timer timer = new Timer();
-        timer.schedule(() -> {
-            System.out.println("short task");
-        }, 1000);
-
-        timer.schedule(() -> {
-            System.out.println("long task");
-        }, 5000);
-
-        timer.scheduleAtFixedRate(() -> {
-            System.out.println("frame task");
-        }, 0, 1000);
-
-    }
-
 }
 
 class TimerThread extends Thread {

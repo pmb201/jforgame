@@ -14,7 +14,7 @@ public class RobotStartup {
 		ServerConfig.getInstance();
 		
 		ClientPlayer firstPlayer = new ClientPlayer("kingston");
-		firstPlayer.buildConnection();
+		//firstPlayer.buildConnection();
 		firstPlayer.login();
 		firstPlayer.selectedPlayer(10000L);
 
