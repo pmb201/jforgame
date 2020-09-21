@@ -24,7 +24,7 @@
 			<artifactId>tools</artifactId>
 			<version>1.8.0</version>
 			<scope>system</scope>
-			<systemPath>${sun.boot.library.path}/tools.jar</systemPath>
+			<systemPath>/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.151-5.b12.el7_4.x86_64/lib/tools.jar</systemPath>
 		</dependency>
 	</dependencies>
 
