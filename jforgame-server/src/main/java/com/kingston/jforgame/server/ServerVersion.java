@@ -22,7 +22,7 @@ public class ServerVersion {
 
 	public static void load() throws Exception {
 		Properties properties = new Properties();
-		properties.load(new FileInputStream(CONFIG_PATH));
+		properties.load(ServerVersion.class.getClassLoader().getResourceAsStream(CONFIG_PATH));
 		String version = properties.getProperty("server.version");
 		try {
 			String[] splits = version.trim().split("\\.");

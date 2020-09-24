@@ -1,5 +1,8 @@
 package com.kingston.jforgame.server.db;
 
+
+import java.io.FileReader;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
@@ -11,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.kingston.jforgame.orm.utils.DbHelper;
+import org.xml.sax.InputSource;
 
 /**
  * 使用proxool数据源对orm-DbUtils的进一步封装
@@ -29,9 +33,10 @@ public class DbUtils {
 	public static void init() {
 		try {
 			logger.info("init database connection pool……");
-			JAXPConfigurator.configure("configs/proxool.xml", false);
+			InputStream inputStream = DbUtils.class.getClassLoader().getResourceAsStream("configs/proxool.xml");
+			JAXPConfigurator.configure(new InputSource(inputStream), false);
 		} catch (ProxoolException e) {
-			logger.error("read config failed ", e);
+			logger.error("read configs failed ", e);
 			System.exit(-1);
 		}
 	}

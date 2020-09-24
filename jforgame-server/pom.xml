@@ -215,6 +215,10 @@
             <resource>
                 <directory>src/main/resources</directory>
             </resource>
+            <resource>
+                <directory>configs/${profiles.active}</directory>
+                <targetPath>configs</targetPath>
+            </resource>
         </resources>
         <plugins>
 
@@ -239,28 +243,7 @@
                 </executions>
             </plugin>
 
-            <plugin>
-                <artifactId>maven-resources-plugin</artifactId>
-                <version>2.6</version>
-                <executions>
-                    <execution>
-                        <!--&lt;!&ndash; 配置文件要跟jar包在同一个目录 &ndash;&gt;-->
-                        <id>copy-config</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>copy-resources</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>${project.build.directory}/configs</outputDirectory>
-                            <resources>
-                                <resource>
-                                    <directory>configs/${profiles.active}</directory>
-                                </resource>
-                            </resources>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
+
 
             <!--&lt;!&ndash; Maven插件支持预编译功能配置，使用该功能后，所有的Jprotobuf注解标识的对象都会进行预编译操作，并生成相应的class文件到目标jar或war中 &ndash;&gt;
             &lt;!&ndash; 部分eclipse下该插件可能无法找到，可以选择忽略，但maven命令行下打包是没问题的 &ndash;&gt;
@@ -292,13 +275,13 @@
                 <executions>
                     <execution>
                         &lt;!&ndash; 配置文件要跟jar包在同一个目录 &ndash;&gt;
-                        <id>copy-config</id>
+                        <id>copy-configs</id>
                         <phase>package</phase>
                         <goals>
                             <goal>copy-resources</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>${project.build.directory}/configs</outputDirectory>
+                            <outputDirectory>${project.build.directory}/classes/configs</outputDirectory>
                             <resources>
                                 <resource>
                                     <directory>configs/${profiles.active}</directory>
