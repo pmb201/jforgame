@@ -11,7 +11,6 @@ import com.kingston.jforgame.server.game.login.LoginDataPool;
 import com.kingston.jforgame.server.game.login.message.vo.PlayerLoginVo;
 import com.kingston.jforgame.socket.annotation.MessageMeta;
 import com.kingston.jforgame.socket.message.Message;
-@ProtobufClass
 @MessageMeta(module = Modules.LOGIN, cmd = LoginDataPool.RES_LOGIN)
 public class ResAccountLogin extends Message {
 

@@ -11,7 +11,7 @@
 		<relativePath>../../../jforgame</relativePath>
 	</parent>
 	<artifactId>hotswap-agent</artifactId>
-
+	<version>1.0.0</version>
 
 	<build>
 		<plugins>
