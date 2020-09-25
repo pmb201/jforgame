@@ -29,20 +29,16 @@ public enum DirtyWordsReader {
 
 	private Set<String> readSensitiveWordPool() {
 		Set<String> words = new HashSet<>();
-		File file = new File(FILE_PATH);
-		try (InputStreamReader read = new InputStreamReader(new FileInputStream(file),ENCODING)) {
-			if (file.isFile() && file.exists()) {
-				BufferedReader bufferedReader = new BufferedReader(read);
-				String word;
-				while ((word = bufferedReader.readLine()) != null) {
-					if(isEmpty(word)){
-						continue;
-					}
-					wordCount++;
-					words.add(word.trim());
+		//File file = new File(FILE_PATH);
+		try (InputStreamReader read = new InputStreamReader(DirtyWordsReader.class.getClassLoader().getResourceAsStream(FILE_PATH),ENCODING)) {
+			BufferedReader bufferedReader = new BufferedReader(read);
+			String word;
+			while ((word = bufferedReader.readLine()) != null) {
+				if(isEmpty(word)){
+					continue;
 				}
-			}else{
-				throw new FileNotFoundException("dirty words file is empty");
+				wordCount++;
+				words.add(word.trim());
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

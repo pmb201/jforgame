@@ -1,5 +1,6 @@
 package com.kingston.jforgame.server.utils;
 
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,11 +13,12 @@ public class JsConfigReaderTest {
 
 	@Test
 	public void testReadConfig() throws Exception {
-		String content = FileUtils.readText("configs/firewall.cfg.js");
+		InputStream inputStream = JsConfigReaderTest.class.getClassLoader().getResourceAsStream("configs/firewall.cfg.js");
+		String content = FileUtils.readText(inputStream);
 		
 		FireWallConfig config = new FireWallConfig();
 		Map<String, Object> params = new HashMap<>();
-		params.put("config", config);
+		params.put("configs", config);
 		
 		String response = JsScriptEngine.runCode(content, params);
 		System.err.println(config);

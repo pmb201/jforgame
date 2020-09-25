@@ -1,6 +1,7 @@
 package com.kingston.jforgame.server.utils;
 
 import java.io.File;
+import java.io.InputStream;
 
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
@@ -28,12 +29,10 @@ public class XmlUtils {
 	public static <T> T loadXmlConfig(String fileName, Class<T> configClass) {
 		T ob = null;
 		fileName = ROOT_CONFIG_PATH + fileName;
-		if (!new File(fileName).exists()) {
-			return ob;
-		}
+		InputStream inputStream = XmlUtils.class.getClassLoader().getResourceAsStream(fileName);
 		Serializer serializer = new Persister();
 		try {
-			ob = serializer.read(configClass, new File(fileName));
+			ob = serializer.read(configClass, inputStream);
 		} catch (Exception ex) {
 			logger.error("文件" + fileName + "配置有误", ex);
 		}

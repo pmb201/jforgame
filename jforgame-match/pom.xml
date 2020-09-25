@@ -55,6 +55,12 @@
 		<dependency>
 			<groupId>org.apache.mina</groupId>
 			<artifactId>mina-http</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.apache.mina</groupId>
+					<artifactId>mina-core</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<!-- json utils -->

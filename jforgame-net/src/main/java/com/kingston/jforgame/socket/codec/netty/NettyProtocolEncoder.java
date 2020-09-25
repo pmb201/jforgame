@@ -1,6 +1,7 @@
 package com.kingston.jforgame.socket.codec.netty;
 
 import io.netty.util.CharsetUtil;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,15 +30,25 @@ public class NettyProtocolEncoder extends MessageToByteEncoder<Message> {
 
 		try {
 			// 消息元信息常量3表示消息body前面的两个字段，一个short表示module，一个byte表示cmd,
-			final int metaSize = 3;
+			final int metaSize = 3 + 8 + 13 + 32;
 			IMessageEncoder msgEncoder = SerializerHelper.getInstance().getEncoder();
 			byte[] body = msgEncoder.writeMessageBody(message);
+			StringBuffer sb = new StringBuffer();
 			//消息内容长度
 			out.writeInt(body.length + metaSize);
 			// 写入module类型
 			out.writeShort(module);
 			// 写入cmd类型
 			out.writeByte(cmd);
+			//写入版本
+			String version = "01.00.01";
+			out.writeBytes(version.getBytes());
+			//写入时间
+			String dateTime = String.valueOf(System.currentTimeMillis());
+			out.writeBytes(dateTime.getBytes());
+			//写入签名
+			String signature = DigestUtils.md5Hex(sb.append(module).append(cmd).append(version).append(dateTime).toString());
+			out.writeBytes(signature.getBytes());
 			//写入消息体
 			out.writeBytes(body);
 			//标记交给下一个编码器处理

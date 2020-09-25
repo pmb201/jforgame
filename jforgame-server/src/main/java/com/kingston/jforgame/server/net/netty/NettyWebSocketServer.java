@@ -82,7 +82,6 @@ public class NettyWebSocketServer implements ServerNode {
 
             // 绑定端口，同步等待成功
             ChannelFuture f = bootstrap.bind(new InetSocketAddress(serverPort));
-            //f.channel().closeFuture().sync();
         }catch (Exception e){
             e.printStackTrace();
         }

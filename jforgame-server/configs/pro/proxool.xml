@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="GBK"?>
+<!DOCTYPE proxool-config>
+<proxool-config>
+	<proxool>
+		<alias>data</alias>
+		<driver-url>jdbc:mysql://xiyoutest.mysql.rds.aliyuncs.com:3820/game_data_test</driver-url>
+		<driver-class>com.mysql.cj.jdbc.Driver</driver-class>
+		<driver-properties>
+			<property name="characterEncoding" value="utf-8" />
+			<property name="useUnicode" value="true" />
+			<property name="serverTimezone" value="UTC" />
+			<property name="user" value="developer_test1" />
+			<property name="password" value="hXRJR!lxT@es3FPYt5ZD" />
+		</driver-properties>
+		<!--5分钟检查一下该数据库连接是否有用，没用就创建一个 -->
+		<house-keeping-sleep-time>300000</house-keeping-sleep-time>
+		<house-keeping-test-sql>select CURRENT_DATE</house-keeping-test-sql>
+		<maximum-connection-count>10</maximum-connection-count>
+		<minimum-connection-count>5</minimum-connection-count>
+		<!--18000000= 5 hours -->
+		<maximum-connection-lifetime>18000000</maximum-connection-lifetime>
+		<simultaneous-build-throttle>5</simultaneous-build-throttle>
+		<recently-started-threshold>40000</recently-started-threshold>
+		<overload-without-refusal-lifetime>50000</overload-without-refusal-lifetime>
+		<maximum-active-time>60000</maximum-active-time>
+		<verbose>true</verbose>
+		<!-- <trace>true</trace>  -->
+		<fatal-sql-exception>Fatal error</fatal-sql-exception>
+		<!-- 连接池中可用的连接数量（空暇状态） -->
+		<prototype-count>2</prototype-count>
+		<!-- 连接池日志类型 -->
+		<statistics-log-level>ERROR</statistics-log-level>
+		<!-- 假设为true,那么每一个被运行的SQL语句将会在运行期被log记录(DEBUG LEVEL) -->
+		<trace>true</trace>
+		<!-- 连接池使用状态 -->
+		<statistics>30s,10m,1d</statistics>
+	</proxool>
+
+	<proxool>
+		<alias>user</alias>
+		<driver-url>jdbc:mysql://xiyoutest.mysql.rds.aliyuncs.com:3820/game_data_test</driver-url>
+		<driver-class>com.mysql.cj.jdbc.Driver</driver-class>
+		<driver-properties>
+			<property name="characterEncoding" value="utf-8" />
+			<property name="useUnicode" value="true" />
+			<property name="serverTimezone" value="UTC" />
+			<property name="user" value="developer_test1" />
+			<property name="password" value="hXRJR!lxT@es3FPYt5ZD" />
+		</driver-properties>
+		<!--5分钟检查一下该数据库连接是否有用，没用就创建一个 -->
+		<house-keeping-sleep-time>300000</house-keeping-sleep-time>
+		<house-keeping-test-sql>select CURRENT_DATE</house-keeping-test-sql>
+		<maximum-connection-count>10</maximum-connection-count>
+		<minimum-connection-count>5</minimum-connection-count>
+		<!--18000000= 5 hours -->
+		<maximum-connection-lifetime>18000000</maximum-connection-lifetime>
+		<simultaneous-build-throttle>5</simultaneous-build-throttle>
+		<recently-started-threshold>40000</recently-started-threshold>
+		<overload-without-refusal-lifetime>50000</overload-without-refusal-lifetime>
+		<maximum-active-time>60000</maximum-active-time>
+		<verbose>true</verbose>
+		<!-- <trace>true</trace>  -->
+		<fatal-sql-exception>Fatal error</fatal-sql-exception>
+		<prototype-count>2</prototype-count>
+	</proxool>
+
+</proxool-config>

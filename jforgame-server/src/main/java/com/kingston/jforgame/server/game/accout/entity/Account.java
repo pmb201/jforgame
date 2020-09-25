@@ -17,6 +17,8 @@ public class Account extends BaseEntity  {
 	
 	@Column
 	private String name;
+
+	private long roomId;
 	
 	public Account() {
 		this.id = IdGenerator.getNextId();
@@ -38,6 +40,17 @@ public class Account extends BaseEntity  {
 	public void setId(long id) {
 		this.id = id;
 	}
-	
 
+
+	public long getRoomId() {
+		return roomId;
+	}
+
+	public void setRoomId(long roomId) {
+		this.roomId = roomId;
+	}
+
+	public boolean isJoinRoom() {
+		return this.roomId > 0;
+	}
 }
