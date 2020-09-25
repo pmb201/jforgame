@@ -9,7 +9,7 @@
 
 
 	<!-- http后台管理 -->
-	<adminPort>8082</adminPort>
+	<adminPort>8088</adminPort>
 	<whiteIps>127.0.0.1;192.168.*;10.11.*;0:0:0:0:0:0:0:1</whiteIps>
 
 	<!--匹配服http地址 -->

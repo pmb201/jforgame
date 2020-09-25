@@ -1,5 +1,5 @@
  #!/bin/sh
-serverName='GameServer'
+serverName='jforgame-server-1.0.0'
 GAME_PID=`pwd`/var/game.pid
 #echo "pid="$GAME_PID
 JMX_IP="localhost"
@@ -32,9 +32,8 @@ if [ $1 == "start" ]; then
   java -server $JVM_ARGS \
   -Xloggc:$localdir/gc_$today.log \
   -Dgame.serverId=$serverId \
-  -Dfile.encoding=UTF-8 -jar $serverName.jar > /dev/null &
-    echo $! > ${GAME_PID}
-  fi
+  -Dfile.encoding=UTF-8 -jar $serverName.jar
+
 elif [ $1 == "stop" ]; then 
   #pid=`jps -lv|grep serverId=$serverId|awk '{print $1}'`
   pid=`cat ${GAME_PID}`
