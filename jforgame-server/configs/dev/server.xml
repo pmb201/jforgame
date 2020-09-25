@@ -2,7 +2,7 @@
 <server>
 
 	<serverId>10001</serverId>
-	<serverPort>9529</serverPort>
+	<serverPort>9530</serverPort>
 	<webSocketServerPort>9528</webSocketServerPort>
 	<!-- 客户端封包最大字节数 -->
 	<maxReceiveBytes>566836428</maxReceiveBytes>
@@ -20,7 +20,7 @@
 	<!--本服是否为战斗服 -->
 	<fight>true</fight>
 	<!--对外跨服端口 -->
-	<crossPort>9627</crossPort>
+	<crossPort>9628</crossPort>
 
 	<redisUrl>118.31.236.188:6390</redisUrl>
 </server>
