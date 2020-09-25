@@ -1,5 +1,6 @@
 package com.kingston.jforgame.server;
 
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -40,11 +41,13 @@ public class FireWallConfig {
 
 	private void init() {
 		try {
-			String content = FileUtils.readText("configs/firewall.cfg.js");
+
+			InputStream inputStream = FireWallConfig.class.getClassLoader().getResourceAsStream("firewall.cfg.js");
+			String content = FileUtils.readText(inputStream);
 
 			self = new FireWallConfig();
 			Map<String, Object> params = new HashMap<>();
-			params.put("config", self);
+			params.put("configs", self);
 
 			JsScriptEngine.runCode(content, params);
 		} catch (Exception e) {

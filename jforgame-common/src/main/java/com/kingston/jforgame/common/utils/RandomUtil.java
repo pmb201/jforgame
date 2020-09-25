@@ -26,4 +26,13 @@ public class RandomUtil {
         return getRandom().nextInt();
     }
 
+    /**
+     * 返回0（包括）至Integer.MAX_VALUE(不包括)之间随机的一个数
+     * @return
+     */
+    public static final int nextInt(int max) {
+        Random random = getRandom();
+        return random.nextInt(max);
+    }
+
 }

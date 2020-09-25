@@ -26,7 +26,14 @@
 		<verbose>true</verbose>
 		<!-- <trace>true</trace>  -->
 		<fatal-sql-exception>Fatal error</fatal-sql-exception>
+		<!-- 连接池中可用的连接数量（空暇状态） -->
 		<prototype-count>2</prototype-count>
+		<!-- 连接池日志类型 -->
+		<statistics-log-level>ERROR</statistics-log-level>
+		<!-- 假设为true,那么每一个被运行的SQL语句将会在运行期被log记录(DEBUG LEVEL) -->
+		<trace>true</trace>
+		<!-- 连接池使用状态 -->
+		<statistics>30s,10m,1d</statistics>
 	</proxool>
 
 	<proxool>
