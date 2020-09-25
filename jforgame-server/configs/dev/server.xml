@@ -22,5 +22,5 @@
 	<!--对外跨服端口 -->
 	<crossPort>9627</crossPort>
 
-	<redisUrl>127.0.0.1:8001</redisUrl>
+	<redisUrl>118.31.236.188:6390</redisUrl>
 </server>
