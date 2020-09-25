@@ -3,7 +3,7 @@
 
 	<serverId>10001</serverId>
 	<serverPort>9529</serverPort>
-	<webSocketServerPort>9533</webSocketServerPort>
+	<webSocketServerPort>9528</webSocketServerPort>
 	<!-- 客户端封包最大字节数 -->
 	<maxReceiveBytes>566836428</maxReceiveBytes>
 
