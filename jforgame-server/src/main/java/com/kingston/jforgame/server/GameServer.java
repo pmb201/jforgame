@@ -65,11 +65,11 @@ public class GameServer {
 		// 游戏业务初始化
 		gameLogicInit();
 
-		System.out.println(GameContext.getRoomManager().createRoom("123131",new Account()));
-
-		System.out.println(GameContext.getRoomManager().joinRoom(null,"123131",new Account()));
-
-		GameContext.getRoomManager().sout();
+//		System.out.println(GameContext.getRoomManager().createRoom("123131",new Account()));
+//
+//		System.out.println(GameContext.getRoomManager().joinRoom(null,"123131",new Account()));
+//
+//		GameContext.getRoomManager().sout();
 
 		stopWatch.stop();
 		logger.error("游戏服务启动，耗时[{}]毫秒", stopWatch.getTime());

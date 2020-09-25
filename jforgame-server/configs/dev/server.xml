@@ -3,13 +3,13 @@
 
 	<serverId>10001</serverId>
 	<serverPort>9529</serverPort>
-	<webSocketServerPort>9528</webSocketServerPort>
+	<webSocketServerPort>9533</webSocketServerPort>
 	<!-- 客户端封包最大字节数 -->
 	<maxReceiveBytes>566836428</maxReceiveBytes>
 
 
 	<!-- http后台管理 -->
-	<adminPort>8080</adminPort>
+	<adminPort>8082</adminPort>
 	<whiteIps>127.0.0.1;192.168.*;10.11.*;0:0:0:0:0:0:0:1</whiteIps>
 
 	<!--匹配服http地址 -->

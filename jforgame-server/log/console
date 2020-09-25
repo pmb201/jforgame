@@ -1,0 +1,15 @@
+[17:05:29][QuartzScheduler_Worker-30] - File 'jobs/Jobs.xml' does not exist.
+[17:05:39][QuartzScheduler_Worker-1] - File 'jobs/Jobs.xml' does not exist.
+[17:05:49][QuartzScheduler_Worker-2] - File 'jobs/Jobs.xml' does not exist.
+[17:05:59][QuartzScheduler_Worker-3] - File 'jobs/Jobs.xml' does not exist.
+[17:06:09][QuartzScheduler_Worker-4] - File 'jobs/Jobs.xml' does not exist.
+[17:06:18][Shutdown Hook] - Shutting down 'data' pool immediately [Shutdown Hook]
+[17:06:18][Thread-9] - 游戏进程准备关闭
+[17:06:18][Shutdown Hook] - Shutting down 'user' pool immediately [Shutdown Hook]
+[17:06:18][Thread-9] - ---------> socket server stop successfully
+[17:06:18][Shutdown Hook] - Stopping Prototyper thread
+[17:06:18][Shutdown Hook] - Stopping HouseKeeper thread
+[17:06:18][Thread-9] - ---------> http server stop at port:8080
+[17:06:18][Thread-9] - ---------> cross server stop successfully
+[17:06:18][Thread-9] - [Db4Common] 执行全部命令后关闭
+[17:06:18][Thread-9] - 游戏服务正常关闭，耗时[20]毫秒

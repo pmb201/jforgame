@@ -8,7 +8,6 @@ import com.kingston.jforgame.server.game.gm.GmManager;
 import com.kingston.jforgame.server.game.login.LoginManager;
 import com.kingston.jforgame.server.game.person.PersonManager;
 import com.kingston.jforgame.server.game.player.PlayerManager;
-import com.kingston.jforgame.server.game.room.RoomManager;
 import com.kingston.jforgame.server.game.skill.SkillManager;
 
 /**
@@ -41,11 +40,6 @@ public class GameContext {
         return playerManager;
     }
 
-    private static RoomManager roomManager = new RoomManager();
-
-    public static RoomManager getRoomManager(){
-        return roomManager;
-    }
 
     private static SkillManager skillManager = new SkillManager();
 
