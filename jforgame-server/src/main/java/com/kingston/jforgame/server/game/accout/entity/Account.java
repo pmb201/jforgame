@@ -1,25 +1,29 @@
 package com.kingston.jforgame.server.game.accout.entity;
 
+import com.kingston.jforgame.server.db.BaseEntity;
+import com.kingston.jforgame.server.game.accout.model.AccountProfile;
+import com.kingston.jforgame.server.utils.IdGenerator;
+import lombok.ToString;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
-import com.kingston.jforgame.server.db.BaseEntity;
-import com.kingston.jforgame.server.utils.IdGenerator;
-
 
 @Entity
+@ToString
 public class Account extends BaseEntity  {
 	
 	@Id
 	@Column
 	private long id;
+
+	@Column(unique = true)
+	private String unionId;
 	
 	@Column
 	private String name;
 
-	private long roomId;
-	
 	public Account() {
 		this.id = IdGenerator.getNextId();
 	}
@@ -41,16 +45,21 @@ public class Account extends BaseEntity  {
 		this.id = id;
 	}
 
-
-	public long getRoomId() {
-		return roomId;
+	public void setUnionId(String unionId) {
+		this.unionId = unionId;
 	}
 
-	public void setRoomId(long roomId) {
-		this.roomId = roomId;
+	public String getUnionId() {
+		return unionId;
 	}
 
-	public boolean isJoinRoom() {
-		return this.roomId > 0;
+	public AccountProfile buildProfile(){
+		AccountProfile accountProfile = new AccountProfile();
+		accountProfile.setId(this.id);
+		accountProfile.setName(this.name);
+		accountProfile.setUnionId(this.unionId);
+		return accountProfile;
 	}
+
+
 }

@@ -1,10 +1,10 @@
 package com.kingston.jforgame.server.game.gm.command;
 
-import java.util.List;
-
+import com.kingston.jforgame.server.game.accout.entity.Account;
 import com.kingston.jforgame.server.game.database.config.ConfigDataPool;
-import com.kingston.jforgame.server.game.database.user.player.Player;
 import com.kingston.jforgame.server.game.gm.message.ResGmResult;
+
+import java.util.List;
 
 /**
  * 修改配置表的gm
@@ -24,7 +24,7 @@ public class GmReloadConfigCommand extends AbstractGmCommand {
 	}
 
 	@Override
-	public ResGmResult execute(Player player, List<String> params) {
+	public ResGmResult execute(Account account, List<String> params) {
 		String tableName = params.get(0);
 		if (ConfigDataPool.getInstance().reload(tableName)) {
 			return ResGmResult.buildSuccResult("重载" + tableName + "表成功");

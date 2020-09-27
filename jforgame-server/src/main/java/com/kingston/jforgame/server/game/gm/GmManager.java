@@ -2,8 +2,8 @@ package com.kingston.jforgame.server.game.gm;
 
 import com.kingston.jforgame.common.utils.ClassScanner;
 import com.kingston.jforgame.server.game.GameContext;
+import com.kingston.jforgame.server.game.accout.entity.Account;
 import com.kingston.jforgame.server.game.core.MessagePusher;
-import com.kingston.jforgame.server.game.database.user.player.Player;
 import com.kingston.jforgame.server.game.gm.command.AbstractGmCommand;
 import com.kingston.jforgame.server.game.gm.message.ResGmResult;
 
@@ -39,9 +39,9 @@ public class GmManager {
 	 * @return
 	 */
 	public void receiveCommand(long playerId, String content) {
-		Player player = GameContext.getPlayerManager().get(playerId);
+		Account account = GameContext.getAccountManager().get(playerId);
 		//判断权限
-		if (!hasExecPower(player)) {
+		if (!hasExecPower(account)) {
 			return;
 		}
 		for (Map.Entry<Pattern, AbstractGmCommand> entry:commands.entrySet()) {
@@ -51,7 +51,7 @@ public class GmManager {
 			Matcher matcher = pattern.matcher(content);
 			if (command.isMatch(pattern, matcher, content)) {
 				List<String> params = command.params(matcher, content);
-				ResGmResult result =  command.execute(player, params);
+				ResGmResult result =  command.execute(account, params);
 				MessagePusher.pushMessage(playerId, result);
 				return;
 			}
@@ -63,10 +63,10 @@ public class GmManager {
 	
 	/**
 	 * 是否有执行权限
-	 * @param player
+	 * @param account
 	 * @return
 	 */
-	private boolean hasExecPower(Player player) {
+	private boolean hasExecPower(Account account) {
 		//这里根据具体业务进行拦截
 		return true;
 	}

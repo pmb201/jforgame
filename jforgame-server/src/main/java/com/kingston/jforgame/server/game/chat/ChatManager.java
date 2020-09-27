@@ -1,19 +1,19 @@
 package com.kingston.jforgame.server.game.chat;
 
 import com.kingston.jforgame.server.game.GameContext;
+import com.kingston.jforgame.server.game.accout.entity.Account;
 import com.kingston.jforgame.server.game.chat.channel.ChannelType;
 import com.kingston.jforgame.server.game.chat.channel.ChatChannel;
 import com.kingston.jforgame.server.game.chat.model.TextChatMessage;
-import com.kingston.jforgame.server.game.database.user.player.Player;
 
 public class ChatManager {
 	
 	public void privateChat(long receiverId, String content) {
-		Player receiver = GameContext.getPlayerManager().get(receiverId);
+		Account receiver = GameContext.getAccountManager().get(receiverId);
 		if (receiver == null) {
 			return;
 		}
-		if (!GameContext.getPlayerManager().isOnline(receiverId)) {
+		if (!GameContext.getAccountManager().isOnline(receiverId)) {
 			return;
 		}
 		TextChatMessage textMsg = new TextChatMessage();

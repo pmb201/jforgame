@@ -1,13 +1,5 @@
 package com.kingston.jforgame.server.client;
 
-import java.net.InetSocketAddress;
-
-import org.apache.mina.core.future.ConnectFuture;
-import org.apache.mina.core.service.IoHandlerAdapter;
-import org.apache.mina.core.session.IoSession;
-import org.apache.mina.filter.codec.ProtocolCodecFilter;
-import org.apache.mina.transport.socket.nio.NioSocketConnector;
-
 import com.google.gson.Gson;
 import com.kingston.jforgame.server.ServerConfig;
 import com.kingston.jforgame.server.game.login.message.req.ReqAccountLogin;
@@ -16,6 +8,13 @@ import com.kingston.jforgame.server.game.player.message.req.ReqCreateNewPlayer;
 import com.kingston.jforgame.server.logs.LoggerUtils;
 import com.kingston.jforgame.socket.codec.SerializerHelper;
 import com.kingston.jforgame.socket.message.Message;
+import org.apache.mina.core.future.ConnectFuture;
+import org.apache.mina.core.service.IoHandlerAdapter;
+import org.apache.mina.core.session.IoSession;
+import org.apache.mina.filter.codec.ProtocolCodecFilter;
+import org.apache.mina.transport.socket.nio.NioSocketConnector;
+
+import java.net.InetSocketAddress;
 
 /**
  * 使用socket构建的机器人
@@ -57,6 +56,7 @@ public class ClientPlayer {
 		ReqAccountLogin request = new ReqAccountLogin();
 		request.setPassword("kingston");
 		request.setAccountId(123L);
+		request.setUnionId("123456789");
 		this.sendMessage(request);
 	}
 

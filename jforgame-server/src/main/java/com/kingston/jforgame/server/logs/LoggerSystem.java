@@ -13,7 +13,8 @@ public enum LoggerSystem {
 	CRON_JOB,
 	/** server monitor */
 	MONITOR,
-
+	/** business warn */
+	WARN
 	;
 
 	public Logger getLogger() {
