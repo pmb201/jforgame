@@ -31,10 +31,6 @@ public class LoggerBuilder {
         return logger;
     }
 
-    public static void main(String[] args) {
-        LoggerFunction.ACTIVITY.getLogger().error("hello game");
-    }
-
     private static Logger build(String name) {
         Logger logger = Logger.getLogger(name);
         logger.removeAllAppenders();

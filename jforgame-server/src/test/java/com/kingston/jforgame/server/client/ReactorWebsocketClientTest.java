@@ -21,8 +21,9 @@ public class ReactorWebsocketClientTest {
         client.connect("172.0.15.68",9528);
 
         ReqAccountLogin position = new ReqAccountLogin();
-        position.setAccountId(123L);
+        position.setAccountId(104617);
         position.setPassword("kingston");
+        position.setUnionId("123456789");
         client.send(position);
     }
 }

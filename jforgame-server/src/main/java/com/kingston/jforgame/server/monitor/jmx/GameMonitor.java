@@ -1,24 +1,16 @@
 package com.kingston.jforgame.server.monitor.jmx;
 
-import static java.lang.management.ManagementFactory.getGarbageCollectorMXBeans;
-import static java.lang.management.ManagementFactory.getMemoryMXBean;
-import static java.lang.management.ManagementFactory.getPlatformMXBeans;
-import static java.lang.management.ManagementFactory.getThreadMXBean;
-
-import java.lang.management.BufferPoolMXBean;
-import java.lang.management.GarbageCollectorMXBean;
-import java.lang.management.MemoryMXBean;
-import java.lang.management.ThreadInfo;
-import java.lang.management.ThreadMXBean;
-import java.util.List;
-
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
-
 import com.kingston.jforgame.server.game.GameContext;
 import com.kingston.jforgame.server.logs.LoggerUtils;
 import com.kingston.jforgame.server.net.MessageStatistics;
 import com.kingston.jforgame.server.utils.JsScriptEngine;
+
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import java.lang.management.*;
+import java.util.List;
+
+import static java.lang.management.ManagementFactory.*;
 
 public class GameMonitor implements GameMonitorMBean{
 
@@ -26,7 +18,7 @@ public class GameMonitor implements GameMonitorMBean{
 
 	@Override
 	public int getOnlinePlayerSum() {
-		return GameContext.getPlayerManager().getOnlinePlayers().size();
+		return GameContext.getAccountManager().getOnlineUsers().size();
 	}
 
 	@Override

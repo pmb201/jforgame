@@ -12,14 +12,14 @@ import java.util.Collection;
 
 public class MessagePusher {
 
-    public static void pushMessage(long playerId, Message message) {
-        IdSession userSession = SessionManager.INSTANCE.getSessionBy(playerId);
+    public static void pushMessage(long accountId, Message message) {
+        IdSession userSession = SessionManager.INSTANCE.getSessionBy(accountId);
         pushMessage(userSession, message);
     }
 
-    public static void pushMessage(Collection<Long> playerIds, Message message) {
-        for (long playerId:playerIds) {
-            pushMessage(playerId, message);
+    public static void pushMessage(Collection<Long> accountIds, Message message) {
+        for (long accountId : accountIds) {
+            pushMessage(accountId, message);
         }
     }
 

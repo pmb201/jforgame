@@ -1,13 +1,11 @@
 package com.kingston.jforgame.server.game;
 
 import com.kingston.jforgame.server.doctor.HotswapManager;
-import com.kingston.jforgame.server.doctor.Person;
-import com.kingston.jforgame.server.game.accout.entity.AccountManager;
+import com.kingston.jforgame.server.game.accout.AccountManager;
 import com.kingston.jforgame.server.game.chat.ChatManager;
 import com.kingston.jforgame.server.game.gm.GmManager;
 import com.kingston.jforgame.server.game.login.LoginManager;
 import com.kingston.jforgame.server.game.person.PersonManager;
-import com.kingston.jforgame.server.game.player.PlayerManager;
 import com.kingston.jforgame.server.game.room.RoomManager;
 import com.kingston.jforgame.server.game.skill.SkillManager;
 
@@ -35,11 +33,11 @@ public class GameContext {
         return loginManager;
     }
 
-    private static PlayerManager playerManager = new PlayerManager();
+    /*private static PlayerManager playerManager = new PlayerManager();
 
     public static PlayerManager getPlayerManager() {
         return playerManager;
-    }
+    }*/
 
     private static RoomManager roomManager = new RoomManager();
 

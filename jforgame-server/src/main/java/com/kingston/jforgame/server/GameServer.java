@@ -1,42 +1,37 @@
 package com.kingston.jforgame.server;
 
-import java.io.IOException;
-import java.lang.management.ManagementFactory;
-
-import javax.management.MBeanServer;
-import javax.management.ObjectName;
-
-import com.kingston.jforgame.server.cross.core.match.MatchHttpUtil;
-import com.kingston.jforgame.server.game.GameContext;
-import com.kingston.jforgame.server.game.accout.entity.Account;
-import com.kingston.jforgame.server.game.chat.message.ReqPrivateChat;
-import com.kingston.jforgame.server.game.core.SchedulerManager;
-import com.kingston.jforgame.server.game.cross.ladder.message.Req_F2M_HeatBeat;
-import com.kingston.jforgame.server.listener.ListenerManager;
-import com.kingston.jforgame.server.net.MessageDispatcher;
-import com.kingston.jforgame.server.net.mina.MinaSocketServer;
-import com.kingston.jforgame.server.net.netty.NettySocketServer;
-import com.kingston.jforgame.server.net.netty.NettyWebSocketServer;
-import org.apache.commons.lang3.time.StopWatch;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.kingston.jforgame.common.utils.TimeUtil;
 import com.kingston.jforgame.orm.OrmProcessor;
 import com.kingston.jforgame.server.cross.core.CrossServer;
+import com.kingston.jforgame.server.cross.core.match.MatchHttpUtil;
 import com.kingston.jforgame.server.db.DbService;
 import com.kingston.jforgame.server.db.DbUtils;
+import com.kingston.jforgame.server.game.GameContext;
+import com.kingston.jforgame.server.game.accout.entity.Account;
 import com.kingston.jforgame.server.game.admin.http.HttpCommandManager;
 import com.kingston.jforgame.server.game.admin.http.HttpServer;
 import com.kingston.jforgame.server.game.core.CronSchedulerHelper;
+import com.kingston.jforgame.server.game.core.SchedulerManager;
 import com.kingston.jforgame.server.game.core.SystemParameters;
+import com.kingston.jforgame.server.game.cross.ladder.message.Req_F2M_HeatBeat;
 import com.kingston.jforgame.server.game.database.config.ConfigDataPool;
+import com.kingston.jforgame.server.listener.ListenerManager;
 import com.kingston.jforgame.server.monitor.jmx.GameMonitor;
 import com.kingston.jforgame.server.monitor.jmx.GameMonitorMBean;
+import com.kingston.jforgame.server.net.MessageDispatcher;
+import com.kingston.jforgame.server.net.mina.MinaSocketServer;
+import com.kingston.jforgame.server.net.netty.NettyWebSocketServer;
 import com.kingston.jforgame.server.redis.RedisCluster;
 import com.kingston.jforgame.socket.ServerNode;
 import com.kingston.jforgame.socket.message.MessageFactory;
 import com.kingston.jforgame.socket.task.TaskHandlerContext;
+import org.apache.commons.lang3.time.StopWatch;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.management.MBeanServer;
+import javax.management.ObjectName;
+import java.lang.management.ManagementFactory;
 
 public class GameServer {
 
@@ -65,9 +60,9 @@ public class GameServer {
 		// 游戏业务初始化
 		gameLogicInit();
 
-		System.out.println(GameContext.getRoomManager().createRoom("123131",new Account()));
+		System.out.println(GameContext.getRoomManager().createRoom("123131",new Account().buildProfile()));
 
-		System.out.println(GameContext.getRoomManager().joinRoom(null,"123131",new Account()));
+		System.out.println(GameContext.getRoomManager().joinRoom(null,"123131",new Account().buildProfile()));
 
 		GameContext.getRoomManager().sout();
 
@@ -127,6 +122,7 @@ public class GameServer {
 		// 启动http服务
 		httpServer = new HttpServer();
 		httpServer.start();
+
 		//添加匹配服心跳任务
 		//startMachHeatBeat(config);
 
@@ -159,7 +155,7 @@ public class GameServer {
 
 	private void gameLogicInit() {
 		// 游戏启动时，各种业务初始化写在这里吧
-		GameContext.getPlayerManager().loadAllPlayerProfiles();
+		//GameContext.getPlayerManager().loadAllPlayerProfiles();
 		// 跨服天梯
 //		LadderFightManager.getInstance().init();
 

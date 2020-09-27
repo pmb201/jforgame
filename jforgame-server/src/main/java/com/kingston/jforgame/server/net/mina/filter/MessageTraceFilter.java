@@ -1,21 +1,20 @@
 package com.kingston.jforgame.server.net.mina.filter;
 
-import java.util.HashSet;
-import java.util.Set;
-
+import com.google.gson.Gson;
 import com.kingston.jforgame.server.game.GameContext;
+import com.kingston.jforgame.server.game.accout.model.AccountProfile;
+import com.kingston.jforgame.server.logs.LoggerUtils;
+import com.kingston.jforgame.socket.IdSession;
+import com.kingston.jforgame.socket.mina.MinaSessionProperties;
+import com.kingston.jforgame.socket.session.SessionManager;
 import org.apache.mina.core.filterchain.IoFilterAdapter;
 import org.apache.mina.core.session.IoSession;
 import org.apache.mina.core.write.WriteRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.gson.Gson;
-import com.kingston.jforgame.server.game.database.user.player.Player;
-import com.kingston.jforgame.server.logs.LoggerUtils;
-import com.kingston.jforgame.socket.IdSession;
-import com.kingston.jforgame.socket.mina.MinaSessionProperties;
-import com.kingston.jforgame.socket.session.SessionManager;
+import java.util.HashSet;
+import java.util.Set;
 
 public class MessageTraceFilter extends IoFilterAdapter {
 
@@ -59,10 +58,10 @@ public class MessageTraceFilter extends IoFilterAdapter {
 
 	private String getMessageSignure(IoSession session) {
 		IdSession userSession = SessionManager.INSTANCE.getSessionAttr(session, MinaSessionProperties.UserSession, IdSession.class);
-		long playerId = SessionManager.INSTANCE.getPlayerIdBy(userSession);
-		if (playerId > 0) {
-            Player player = GameContext.getPlayerManager().getOnlinePlayer(playerId);
-			return player.getName();
+		long accountId = SessionManager.INSTANCE.getAccountIdBy(userSession);
+		if (accountId > 0) {
+            AccountProfile accountProfile = GameContext.getAccountManager().getOnlineUser(accountId);
+			return accountProfile.getName();
 		}
 		return String.valueOf(session);
 	}

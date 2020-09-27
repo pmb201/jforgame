@@ -6,22 +6,17 @@ import com.kingston.jforgame.server.db.DbService;
 import com.kingston.jforgame.server.db.DbUtils;
 import com.kingston.jforgame.server.game.GameContext;
 import com.kingston.jforgame.server.game.accout.entity.Account;
+import com.kingston.jforgame.server.game.accout.model.AccountProfile;
 import com.kingston.jforgame.server.game.core.MessagePusher;
 import com.kingston.jforgame.server.game.core.SystemParameters;
 import com.kingston.jforgame.server.game.database.user.player.Player;
 import com.kingston.jforgame.server.game.login.model.Platform;
-import com.kingston.jforgame.server.game.player.events.PlayerLogoutEvent;
 import com.kingston.jforgame.server.game.player.message.ResCreateNewPlayer;
-import com.kingston.jforgame.server.game.player.message.ResKickPlayer;
-import com.kingston.jforgame.server.game.player.model.AccountProfile;
 import com.kingston.jforgame.server.game.player.model.PlayerProfile;
-import com.kingston.jforgame.server.listener.EventDispatcher;
-import com.kingston.jforgame.server.listener.EventType;
 import com.kingston.jforgame.server.logs.LoggerUtils;
 import com.kingston.jforgame.server.net.SessionProperties;
 import com.kingston.jforgame.server.utils.IdGenerator;
 import com.kingston.jforgame.socket.IdSession;
-import com.kingston.jforgame.socket.session.SessionManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -75,7 +70,6 @@ public class PlayerManager extends BaseCacheService<Long, Player> {
         Account account = GameContext.getAccountManager().get(accountId);
 		accountProfiles.putIfAbsent(accountId, new AccountProfile());
 		AccountProfile accountProfile = accountProfiles.get(accountId);
-		accountProfile.addPlayerProfile(baseInfo);
 	}
 
 	public AccountProfile getAccountProfiles(long accountId) {
@@ -86,7 +80,6 @@ public class PlayerManager extends BaseCacheService<Long, Player> {
         Account account = GameContext.getAccountManager().get(accountId);
 		if (account != null) {
 			accountProfile = new AccountProfile();
-			accountProfile.setAccountId(accountId);
 			accountProfiles.putIfAbsent(accountId, accountProfile);
 		}
 		return accountProfile;
@@ -98,7 +91,6 @@ public class PlayerManager extends BaseCacheService<Long, Player> {
 			throw new RuntimeException("账号重复-->" + accountId);
 		}
 		AccountProfile accountProfile = new AccountProfile();
-		accountProfile.setAccountId(accountId);
 		accountProfiles.put(accountId, accountProfile);
 	}
 
@@ -107,7 +99,7 @@ public class PlayerManager extends BaseCacheService<Long, Player> {
 		if (account == null) {
 			return null;
 		}
-		return account.getPlayers();
+		return null;
 	}
 
 	public void createNewPlayer(IdSession session, String name) {
@@ -135,7 +127,7 @@ public class PlayerManager extends BaseCacheService<Long, Player> {
 		response.setPlayerId(playerId);
 		MessagePusher.pushMessage(session, response);
 
-		GameContext.getLoginManager().handleSelectPlayer(session, playerId);
+		//GameContext.getLoginManager().handleSelectPlayer(session, playerId);
 	}
 
 	/**
@@ -210,23 +202,23 @@ public class PlayerManager extends BaseCacheService<Long, Player> {
 	}
 
 	public void playerLogout(long playerId) {
-		Player player = GameContext.getPlayerManager().get(playerId);
+		/*Player player = GameContext.getPlayerManager().get(playerId);
 		if (player == null) {
 			return;
 		}
 		logger.info("角色[{}]退出游戏", playerId);
 
-		EventDispatcher.getInstance().fireEvent(new PlayerLogoutEvent(EventType.LOGOUT, playerId));
+		EventDispatcher.getInstance().fireEvent(new PlayerLogoutEvent(EventType.LOGOUT, playerId));*/
 	}
 
 	public void kickPlayer(long playerId) {
-		Player player = GameContext.getPlayerManager().getOnlinePlayer(playerId);
-		if (player == null) {
+		//Player player = GameContext.getPlayerManager().getOnlinePlayer(playerId);
+		/*if (player == null) {
 			return;
 		}
 		removeFromOnline(player);
 		IdSession session = SessionManager.INSTANCE.getSessionBy(playerId);
-		MessagePusher.pushMessage(session, new ResKickPlayer());
+		MessagePusher.pushMessage(session, new ResKickPlayer());*/
 //		session.close(false);
 	}
 
