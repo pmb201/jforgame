@@ -1,4 +1,4 @@
-[19:13:33][main] - 
+[20:05:29][main] - 
 javax.mail.AuthenticationFailedException: 535 Error: authentication failed
 
 	at com.sun.mail.smtp.SMTPTransport$Authenticator.authenticate(SMTPTransport.java:826)
@@ -38,10 +38,10 @@ javax.mail.AuthenticationFailedException: 535 Error: authentication failed
 	at org.apache.maven.surefire.booter.ProviderFactory.invokeProvider(ProviderFactory.java:85)
 	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:115)
 	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:75)
-[19:13:40][main] - 本服serverId为10001,后台端口为8082
-[19:13:45][main] - init database connection pool……
-[19:13:45][main] - Proxool 0.9.1 (23-Aug-2008 11:10)
-[19:13:50][Shutdown Hook] - Shutting down 'data' pool immediately [Shutdown Hook]
-[19:13:50][Shutdown Hook] - Shutting down 'user' pool immediately [Shutdown Hook]
-[19:13:50][Shutdown Hook] - Stopping Prototyper thread
-[19:13:50][Shutdown Hook] - Stopping HouseKeeper thread
+[20:05:36][main] - 本服serverId为10001,后台端口为8088
+[20:05:41][main] - init database connection pool……
+[20:05:41][main] - Proxool 0.9.1 (23-Aug-2008 11:10)
+[20:05:47][Shutdown Hook] - Shutting down 'data' pool immediately [Shutdown Hook]
+[20:05:47][Shutdown Hook] - Shutting down 'user' pool immediately [Shutdown Hook]
+[20:05:47][Shutdown Hook] - Stopping Prototyper thread
+[20:05:47][Shutdown Hook] - Stopping HouseKeeper thread
