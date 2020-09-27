@@ -1,12 +1,7 @@
 package com.kingston.jforgame.server.game.admin.commands;
-import java.util.Map;
+import com.kingston.jforgame.server.game.admin.http.*;
 
-import com.kingston.jforgame.server.game.GameContext;
-import com.kingston.jforgame.server.game.admin.http.CommandHandler;
-import com.kingston.jforgame.server.game.admin.http.HttpCommandHandler;
-import com.kingston.jforgame.server.game.admin.http.HttpCommandParams;
-import com.kingston.jforgame.server.game.admin.http.HttpCommandResponse;
-import com.kingston.jforgame.server.game.admin.http.HttpCommands;
+import java.util.Map;
 
 @CommandHandler(cmd=HttpCommands.KICK_PLAYER)
 public class KickPlayerCommand extends HttpCommandHandler {
@@ -17,7 +12,7 @@ public class KickPlayerCommand extends HttpCommandHandler {
 		String key = "player";
 		if (params.containsKey(key)) {
 			long playeId = Long.parseLong(params.get(key));
-            GameContext.getPlayerManager().kickPlayer(playeId);
+            //GameContext.getPlayerManager().kickPlayer(playeId);
 			return HttpCommandResponse.valueOfSucc();
 		}
 		return HttpCommandResponse.valueOfSucc();

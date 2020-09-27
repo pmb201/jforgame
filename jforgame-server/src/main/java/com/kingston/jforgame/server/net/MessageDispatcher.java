@@ -1,15 +1,7 @@
 package com.kingston.jforgame.server.net;
 
-import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-
-import com.kingston.jforgame.server.game.GameContext;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.kingston.jforgame.common.utils.ClassScanner;
+import com.kingston.jforgame.server.game.GameContext;
 import com.kingston.jforgame.socket.IdSession;
 import com.kingston.jforgame.socket.annotation.Controller;
 import com.kingston.jforgame.socket.annotation.MessageMeta;
@@ -21,6 +13,13 @@ import com.kingston.jforgame.socket.session.SessionManager;
 import com.kingston.jforgame.socket.task.MessageTask;
 import com.kingston.jforgame.socket.task.TaskHandlerContext;
 import com.kingston.jforgame.socket.task.TimerTask;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 public class MessageDispatcher implements IMessageDispatcher {
 
@@ -146,15 +145,16 @@ public class MessageDispatcher implements IMessageDispatcher {
 
 	@Override
 	public void onSessionClosed(IdSession session) {
-		long playerId = SessionManager.INSTANCE.getPlayerIdBy(session);
-		if (playerId > 0) {
-			logger.info("角色[{}]close session", playerId);
+		long accountId = SessionManager.INSTANCE.getAccountIdBy(session);
+		if (accountId > 0) {
+			logger.info("用户[{}]close session", accountId);
 			int distributeKey = (int) session.getAttribute(SessionProperties.DISTRIBUTE_KEY);
 
 			TimerTask closeTask = new TimerTask(distributeKey) {
 				@Override
 				public void action() {
-                    GameContext.getPlayerManager().playerLogout(playerId);
+					//todo 需要修改直接注销用户
+                    GameContext.getAccountManager().userLogout(accountId);
 				}
 			};
 			TaskHandlerContext.INSTANCE.acceptTask(closeTask);

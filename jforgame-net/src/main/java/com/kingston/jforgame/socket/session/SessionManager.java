@@ -17,14 +17,14 @@ public enum SessionManager {
 
 	/** distributeKey auto generator  */
 	private AtomicInteger distributeKeyGenerator = new AtomicInteger();
-	/** key=playerId, value=session */
-	private ConcurrentMap<Long, IdSession> player2sessions = new ConcurrentHashMap<>();
+	/** key=accountId, value=session */
+	private ConcurrentMap<Long, IdSession> account2sessions = new ConcurrentHashMap<>();
 
 
-	public void registerNewPlayer(long playerId, IdSession session) {
+	public void bindAccount(long accountId, IdSession session) {
 		//biding playeId to session
-		session.setAttribute(IdSession.ID, playerId);
-		this.player2sessions.put(playerId, session);
+		session.setAttribute(IdSession.ID, accountId);
+		this.account2sessions.put(accountId, session);
 	}
 
 	/**
@@ -32,15 +32,15 @@ public enum SessionManager {
 	 * @param session
 	 * @return
 	 */
-	public long getPlayerIdBy(IdSession session) {
+	public long getAccountIdBy(IdSession session) {
 		if (session != null) {
 			return session.getOwnerId();
 		}
 		return 0;
 	}
 
-	public IdSession getSessionBy(long playerId) {
-		return player2sessions.get(playerId);
+	public IdSession getSessionBy(long accountId) {
+		return account2sessions.get(accountId);
 	}
 
 	/**

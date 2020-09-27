@@ -7,5 +7,9 @@ public interface SessionProperties {
 	String PLAYER_ID = "PLAYER_ID";
 	/** 线程池分发器的索引 */
 	String DISTRIBUTE_KEY = "DISTRIBUTE_KEY";
+
+	String ROOM_ID = "ROOM_ID";
+
+
 	
 }

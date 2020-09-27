@@ -1,12 +1,12 @@
 package com.kingston.jforgame.server.game.gm.command;
 
+import com.kingston.jforgame.server.game.accout.entity.Account;
+import com.kingston.jforgame.server.game.gm.message.ResGmResult;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import com.kingston.jforgame.server.game.database.user.player.Player;
-import com.kingston.jforgame.server.game.gm.message.ResGmResult;
 
 /**
  * 抽象gm命令
@@ -52,11 +52,11 @@ public abstract class AbstractGmCommand {
 	
 	/**
 	 * 执行逻辑
-	 * @param player
+	 * @param account
 	 * @param params
 	 * @return
 	 */
-	public abstract ResGmResult execute(Player player, List<String> params);
+	public abstract ResGmResult execute(Account account, List<String> params);
 	
 	
 

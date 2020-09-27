@@ -1,5 +1,11 @@
 package com.kingston.jforgame.server.redis;
 
+import com.kingston.jforgame.server.ServerConfig;
+import com.kingston.jforgame.server.logs.LoggerUtils;
+import org.apache.commons.lang3.StringUtils;
+import redis.clients.jedis.*;
+import redis.clients.jedis.exceptions.JedisException;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -7,18 +13,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
-
-import org.apache.commons.lang3.StringUtils;
-
-import com.kingston.jforgame.server.ServerConfig;
-import com.kingston.jforgame.server.logs.LoggerUtils;
-
-import redis.clients.jedis.Jedis;
-import redis.clients.jedis.JedisCluster;
-import redis.clients.jedis.JedisPool;
-import redis.clients.jedis.JedisPoolConfig;
-import redis.clients.jedis.Tuple;
-import redis.clients.jedis.exceptions.JedisException;
 
 public enum RedisCluster {
 
@@ -41,7 +35,7 @@ public enum RedisCluster {
 		poolConfig.setMinIdle(1);
 		poolConfig.setMaxIdle(10);
 		JedisPool pool = new JedisPool(poolConfig,hostPort[0],Integer.valueOf(hostPort[1]),2000);
-		this.jedis = new Jedis("118.31.236.188", 6390);
+		this.jedis = new Jedis(hostPort[0],Integer.valueOf(hostPort[1]),2000);
 		jedis.setDataSource(pool);
 	}
 

@@ -1,7 +1,6 @@
 package com.kingston.jforgame.server.game.login.message.req;
 
 import com.baidu.bjf.remoting.protobuf.annotation.Protobuf;
-import com.baidu.bjf.remoting.protobuf.annotation.ProtobufClass;
 import com.kingston.jforgame.server.game.Modules;
 import com.kingston.jforgame.server.game.login.LoginDataPool;
 import com.kingston.jforgame.socket.annotation.MessageMeta;
@@ -11,7 +10,6 @@ import com.kingston.jforgame.socket.message.Message;
  * 请求－账号登录
  * @author kingston
  */
-@ProtobufClass
 @MessageMeta(module=Modules.LOGIN, cmd=LoginDataPool.REQ_LOGIN)
 public class ReqAccountLogin extends Message {
 	
@@ -21,6 +19,9 @@ public class ReqAccountLogin extends Message {
 	
 	@Protobuf(order = 2)
 	private String password;
+
+	@Protobuf(order = 3,required = true)
+	private String unionId;
 
 	public long getAccountId() {
 		return accountId;
@@ -43,5 +44,12 @@ public class ReqAccountLogin extends Message {
 		return "ReqLoginMessage [accountId=" + accountId + ", password="
 				+ password + "]";
 	}
-	
+
+	public String getUnionId() {
+		return unionId;
+	}
+
+	public void setUnionId(String unionId) {
+		this.unionId = unionId;
+	}
 }

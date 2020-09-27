@@ -20,4 +20,14 @@ public class LoggerUtils {
 		Logger logger = LoggerSystem.EXCEPTION.getLogger(); 
 		logger.error(format, arguments);  
 	}
+
+	/**
+	 * @param format the format string
+	 */
+	public static void warn(String format, Object... arguments) {
+		Logger logger = LoggerSystem.WARN.getLogger();
+		logger.warn(format, arguments);
+	}
+
+
 }

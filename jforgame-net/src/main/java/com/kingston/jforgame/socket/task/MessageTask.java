@@ -1,13 +1,12 @@
 package com.kingston.jforgame.socket.task;
 
-import java.lang.reflect.Method;
-
 import com.kingston.jforgame.socket.IdSession;
+import com.kingston.jforgame.socket.message.Message;
 import com.kingston.jforgame.socket.session.SessionManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.kingston.jforgame.socket.message.Message;
+import java.lang.reflect.Method;
 
 /**
  * when server receives a message, wrapped it into a MessageTask,
@@ -42,13 +41,14 @@ public class MessageTask extends AbstractDistributeTask {
 
 	@Override
 	public void action() {
+		IdSession session = SessionManager.INSTANCE.getSessionBy(playerId);
 		try{
 			Object response = method.invoke(handler, params);
 			if (response != null) {
-				IdSession session = SessionManager.INSTANCE.getSessionBy(playerId);
 				session.sendPacket(message);
 			}
 		}catch(Exception e){
+
 			logger.error("message task execute failed ", e);
 		}
 	}

@@ -1,11 +1,10 @@
 package com.kingston.jforgame.server.doctor.script;
 
-import java.lang.reflect.Field;
-
 import com.kingston.jforgame.server.doctor.HotswapManager;
-import com.kingston.jforgame.server.game.GameContext;
 import com.kingston.jforgame.server.game.database.user.player.Player;
 import com.kingston.jforgame.server.game.player.PlayerManager;
+
+import java.lang.reflect.Field;
 
 /**
  * you can invoke any code here see {@link HotswapManager#loadJavaFile(String)}
@@ -41,10 +40,10 @@ public class CommonScript {
 			Field field = PlayerManager.class.getDeclaredField("instance");
 			field.setAccessible(true);
 
-            field.set(GameContext.getPlayerManager(), newMgr);
+            //field.set(GameContext.getPlayerManager(), newMgr);
 
-            Player player = GameContext.getPlayerManager().load(12345L);
-			System.err.println(player.getName());
+            //Player player = GameContext.getPlayerManager().load(12345L);
+			//System.err.println(player.getName());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
