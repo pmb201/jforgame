@@ -7,7 +7,6 @@ import com.kingston.jforgame.server.cross.core.match.MatchHttpUtil;
 import com.kingston.jforgame.server.db.DbService;
 import com.kingston.jforgame.server.db.DbUtils;
 import com.kingston.jforgame.server.game.GameContext;
-import com.kingston.jforgame.server.game.accout.entity.Account;
 import com.kingston.jforgame.server.game.admin.http.HttpCommandManager;
 import com.kingston.jforgame.server.game.admin.http.HttpServer;
 import com.kingston.jforgame.server.game.core.CronSchedulerHelper;
@@ -59,12 +58,6 @@ public class GameServer {
 		frameworkInit();
 		// 游戏业务初始化
 		gameLogicInit();
-
-		System.out.println(GameContext.getRoomManager().createRoom("123131",new Account().buildProfile()));
-
-		System.out.println(GameContext.getRoomManager().joinRoom(null,"123131",new Account().buildProfile()));
-
-		GameContext.getRoomManager().sout();
 
 		stopWatch.stop();
 		logger.error("游戏服务启动，耗时[{}]毫秒", stopWatch.getTime());
