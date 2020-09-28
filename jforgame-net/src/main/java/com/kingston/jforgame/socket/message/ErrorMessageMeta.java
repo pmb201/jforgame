@@ -7,7 +7,7 @@ package com.kingston.jforgame.socket.message;
  */
 public class ErrorMessageMeta {
 
-    public static final int ERROR_MODULES = -1;
+    public static final int ERROR_MODULES = 4;
 
     public static final int ERROR_CMD = -1;
 }

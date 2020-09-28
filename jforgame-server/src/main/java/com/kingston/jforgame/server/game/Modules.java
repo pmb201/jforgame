@@ -11,6 +11,8 @@ public interface Modules {
 
 	int NOTICE = 3;
 
+	int ERROR = 4;
+
 	// ------------------业务功能模块（101开始）---------------------
 
 	/** 登录 */
@@ -27,10 +29,14 @@ public interface Modules {
 	int CHAT = 106;
 	/** person */
 	int PERSON = 108;
+	/** 碰撞游戏 */
+	int COLLISION = 109;
 
 	// ------------------跨服业务功能模块（501开始）---------------------
 	/** 跨服天梯 */
 	int LADDER = 501;
+
+
 
 
 }

@@ -3,6 +3,7 @@ package com.kingston.jforgame.server.game;
 import com.kingston.jforgame.server.doctor.HotswapManager;
 import com.kingston.jforgame.server.game.accout.AccountManager;
 import com.kingston.jforgame.server.game.chat.ChatManager;
+import com.kingston.jforgame.server.game.collision.CollisionManager;
 import com.kingston.jforgame.server.game.gm.GmManager;
 import com.kingston.jforgame.server.game.login.LoginManager;
 import com.kingston.jforgame.server.game.person.PersonManager;
@@ -64,6 +65,10 @@ public class GameContext {
     private static HotswapManager hotswapManager = HotswapManager.INSTANCE;
 
     public static HotswapManager getHotswapManager(){return hotswapManager;}
+
+    public static CollisionManager collisionManager = new CollisionManager();
+
+    public static CollisionManager getCollisionManager(){return collisionManager;}
 
 
 }

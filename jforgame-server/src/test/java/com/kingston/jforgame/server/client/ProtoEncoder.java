@@ -9,7 +9,6 @@ import io.netty.channel.ChannelOutboundHandlerAdapter;
 import io.netty.channel.ChannelPromise;
 import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
 import io.netty.util.AttributeKey;
-import io.netty.util.CharsetUtil;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,10 +44,14 @@ public class ProtoEncoder extends ChannelOutboundHandlerAdapter {
             buf.writeInt(data.length + 3 + 8 + 13 + 32); //+ 19 + signature.getBytes(CharsetUtil.UTF_8).length);
             buf.writeShort(packet.getModule());
             buf.writeByte(packet.getCmd());
-            String signature = DigestUtils.md5Hex(packet.getModule()+""+packet.getCmd()+version+data);
-            buf.writeCharSequence(version.subSequence(0,version.length()),CharsetUtil.UTF_8);
-            buf.writeCharSequence(date.subSequence(0,date.length()),CharsetUtil.UTF_8);
-            buf.writeCharSequence(signature.subSequence(0,signature.length()),CharsetUtil.UTF_8);
+            buf.writeBytes(version.getBytes());
+            buf.writeBytes(date.getBytes());
+
+            StringBuffer sb = new StringBuffer();
+            sb.append(packet.getModule()).append(packet.getCmd()).append(version).append(date);
+
+            String signature = DigestUtils.md5Hex(sb.toString());
+            buf.writeBytes(signature.getBytes());
 
             buf.writeBytes(data);
             msg = new BinaryWebSocketFrame(buf);
