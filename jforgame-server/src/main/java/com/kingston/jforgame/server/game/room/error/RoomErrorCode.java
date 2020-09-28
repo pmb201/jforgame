@@ -23,11 +23,11 @@ public enum RoomErrorCode implements IErrorCode {
 
     @Override
     public int code() {
-        return 0;
+        return code;
     }
 
     @Override
     public String message() {
-        return null;
+        return message;
     }
 }
