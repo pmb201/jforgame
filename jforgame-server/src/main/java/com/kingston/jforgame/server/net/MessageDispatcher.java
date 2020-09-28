@@ -1,12 +1,16 @@
 package com.kingston.jforgame.server.net;
 
+import com.kingston.jforgame.common.exception.BizException;
 import com.kingston.jforgame.common.utils.ClassScanner;
 import com.kingston.jforgame.server.game.GameContext;
+import com.kingston.jforgame.server.game.login.message.req.ReqAccountLogin;
+import com.kingston.jforgame.server.logs.LoggerUtils;
 import com.kingston.jforgame.socket.IdSession;
 import com.kingston.jforgame.socket.annotation.Controller;
 import com.kingston.jforgame.socket.annotation.MessageMeta;
 import com.kingston.jforgame.socket.annotation.RequestMapping;
 import com.kingston.jforgame.socket.message.CmdExecutor;
+import com.kingston.jforgame.socket.message.ErrorMessage;
 import com.kingston.jforgame.socket.message.IMessageDispatcher;
 import com.kingston.jforgame.socket.message.Message;
 import com.kingston.jforgame.socket.session.SessionManager;
@@ -106,10 +110,25 @@ public class MessageDispatcher implements IMessageDispatcher {
 		Object[] params = convertToMethodParams(session, cmdExecutor.getParams(), message);
 		Object controller = cmdExecutor.getHandler();
 
-		// 丢到任务消息队列，不在io线程进行业务处理
-		int distributeKey = (int) session.getAttribute(SessionProperties.DISTRIBUTE_KEY);
-		TaskHandlerContext.INSTANCE
-				.acceptTask(MessageTask.valueOf(distributeKey, controller, cmdExecutor.getMethod(), params));
+		//检查是否是登陆
+		if(message instanceof ReqAccountLogin){
+			try {
+				GameContext.getLoginManager().handleAccountLogin(session, ((ReqAccountLogin) message).getUnionId(), ((ReqAccountLogin) message).getPassword());
+			}catch (Exception e){
+				if(e instanceof BizException){
+					BizException bizException = (BizException) e;
+					ErrorMessage errorMessage = new ErrorMessage(bizException.getErrorCode().code(), bizException.getErrorCode().message());
+					session.sendPacket(errorMessage);
+				}
+				LoggerUtils.error("user Login error :{}",(ReqAccountLogin) message);
+			}
+		}else{
+			// 丢到任务消息队列，不在io线程进行业务处理
+			int distributeKey = (int) session.getAttribute(SessionProperties.DISTRIBUTE_KEY);
+			Long accountId = session.getOwnerId();
+			TaskHandlerContext.INSTANCE
+					.acceptTask(MessageTask.valueOf(distributeKey, controller, cmdExecutor.getMethod(), params,accountId));
+		}
 	}
 
 	/**
@@ -153,7 +172,6 @@ public class MessageDispatcher implements IMessageDispatcher {
 			TimerTask closeTask = new TimerTask(distributeKey) {
 				@Override
 				public void action() {
-					//todo 需要修改直接注销用户
                     GameContext.getAccountManager().userLogout(accountId);
 				}
 			};

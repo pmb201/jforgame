@@ -7,6 +7,9 @@ import com.kingston.jforgame.common.utils.RandomUtil;
 import com.kingston.jforgame.server.game.accout.model.AccountProfile;
 import com.kingston.jforgame.server.game.room.error.RoomErrorCode;
 import com.kingston.jforgame.server.game.room.model.RoomProfile;
+import com.kingston.jforgame.socket.IdSession;
+import com.kingston.jforgame.socket.message.Message;
+import com.kingston.jforgame.socket.session.SessionManager;
 import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,6 +45,7 @@ public class RoomManager {
         roomProfiles.put(roomProfile.getId(),roomProfile);
         appRoomMap.put(appId,roomProfiles);
         account.setRoomId(roomProfile.getId());
+        account.setRoomProfile(roomProfile);
         return roomProfile;
     }
 
@@ -61,7 +65,7 @@ public class RoomManager {
             return getByRoomId(account.getRoomId());
         }
         RoomProfile roomProfile;
-        if(roomId == null){
+        if(roomId == null || roomId <= 0){
             Map<Long,RoomProfile> appRooms = appRoomMap.get(appId);
             if(appRooms == null){
                 roomProfile = createRoom(appId,account);
@@ -79,6 +83,7 @@ public class RoomManager {
                 }
             }
             account.setRoomId(roomProfile.getId());
+            account.setRoomProfile(roomProfile);
         }else{
             roomProfile = getByRoomId(roomId);
             AssertUtil.assertNotNull(roomProfile,RoomErrorCode.ROOM_NOT_EXIST);
@@ -86,6 +91,7 @@ public class RoomManager {
             Set<AccountProfile> accountSet = roomProfile.getAccounts();
             accountSet.add(account);
             account.setRoomId(roomProfile.getId());
+            account.setRoomProfile(roomProfile);
         }
         return roomProfile;
     }
@@ -94,8 +100,10 @@ public class RoomManager {
     public RoomProfile leaveRoom(String appId,AccountProfile account){
         RoomProfile roomProfile = null;
         if(account.isJoinRoom()){
-            roomProfile = removeAccount(account.getRoomId(),account);
+            //todo 离开房间去除用户和房间的关联关系，但是房间需保留用户对象
+            //roomProfile = removeAccount(account.getRoomId(),account);
             account.setRoomId(0);
+            account.setRoomProfile(null);
         }
         return roomProfile;
     }
@@ -115,30 +123,52 @@ public class RoomManager {
         return roomProfile;
     }
 
-    public void sout(){
-        System.out.println(appRoomMap.get("123131"));
-    }
-
-
-
-    public RoomProfile removeAccount(Long roomId,AccountProfile account) {
-        for(Map.Entry<String,Map<Long,RoomProfile>> entry : appRoomMap.entrySet()){
-            if(entry != null && entry.getValue().containsKey(roomId)){
-                return entry.getValue().remove(account);
-            }
-        }
-        return null;
-    }
-
     public RoomProfile destroyRoom(Long roomId){
         RoomProfile roomProfile = getByRoomId(roomId);
         if(roomProfile != null){
             Set<AccountProfile> accountProfiles = roomProfile.getAccounts();
             for(AccountProfile accountProfile : accountProfiles){
                 accountProfile.setRoomId(0);
-                accountProfiles.remove(accountProfile);
+                accountProfile.setRoomProfile(null);
             }
+            accountProfiles.clear();
             removeRoom(roomId);
+        }
+        return roomProfile;
+    }
+
+    public void sendBroadcast(long roomId, long accountId, Message message){
+        RoomProfile roomProfile = getByRoomId(roomId);
+        if(roomProfile != null){
+            //todo 塞选在游戏中的用户
+            Set<AccountProfile> accountProfiles = roomProfile.getAccounts();
+            for(AccountProfile accountProfile : accountProfiles){
+                if(accountId != accountProfile.getId()){
+                    sendMessageToUser(accountProfile.getId(),message);
+                }
+            }
+        }
+
+    }
+
+
+    public void sendMessageToUser(long accountId,Message message){
+        IdSession session = SessionManager.INSTANCE.getSessionBy(accountId);
+        if(session != null){
+            session.sendPacket(message);
+        }
+    }
+
+    private RoomProfile removeAccount(Long roomId,AccountProfile account) {
+        RoomProfile roomProfile = null;
+        for(Map.Entry<String,Map<Long,RoomProfile>> entry : appRoomMap.entrySet()){
+            if(entry != null && entry.getValue().containsKey(roomId)){
+                roomProfile = entry.getValue().get(roomId);
+                roomProfile.getAccounts().remove(account);
+            }
+        }
+        if(roomProfile != null && roomProfile.getAccounts().size() == 0){
+            appRoomMap.remove(roomId);
         }
         return roomProfile;
     }

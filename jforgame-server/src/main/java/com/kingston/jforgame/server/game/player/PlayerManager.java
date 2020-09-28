@@ -17,8 +17,6 @@ import com.kingston.jforgame.server.logs.LoggerUtils;
 import com.kingston.jforgame.server.net.SessionProperties;
 import com.kingston.jforgame.server.utils.IdGenerator;
 import com.kingston.jforgame.socket.IdSession;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -32,8 +30,6 @@ import java.util.concurrent.ConcurrentMap;
  * @author kingston
  */
 public class PlayerManager extends BaseCacheService<Long, Player> {
-
-	private Logger logger = LoggerFactory.getLogger(getClass());
 
 	private static PlayerManager instance = new PlayerManager();
 
