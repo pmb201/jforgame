@@ -30,4 +30,6 @@ public class CollisionDataPool {
     public static final byte RES_USER_OPTION = -4;
     /** 响应－添加积分 */
     public static final byte RES_ADD_SCORE = -5;
+    /** 响应－用户操作帧同步 */
+    public static final byte RES_USER_OPTIONS = -20;
 }

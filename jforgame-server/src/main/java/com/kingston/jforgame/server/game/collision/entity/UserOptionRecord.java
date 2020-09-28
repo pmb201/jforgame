@@ -24,9 +24,6 @@ public class UserOptionRecord extends BaseEntity {
     private long accountId;
 
     @Column
-    private long dateTime;
-
-    @Column
     private long gameRecordId;
 
     @Column

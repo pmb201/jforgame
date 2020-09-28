@@ -29,6 +29,8 @@ public class RoomManager {
 
     private Logger logger = LoggerFactory.getLogger(getClass());
 
+    public static int SYSTEM_ID = 0;
+
     private Map<String, Map<Long,RoomProfile>> appRoomMap = new ConcurrentHashMap<>();
 
     public RoomProfile createRoom(String appId, AccountProfile account){
@@ -71,13 +73,14 @@ public class RoomManager {
                 roomProfile = createRoom(appId,account);
             }else{
                 List<RoomProfile> canJoinRooms = appRooms.entrySet().stream()
-                        .filter(appRoomProfile -> appRoomProfile.getValue().getStatus() == RoomProfile.Status.CREATE.getCode())
+                        .filter(appRoomProfile -> appRoomProfile.getValue().canJoin())
                         .map(appRoomProfile -> appRoomProfile.getValue())
                         .collect(Collectors.toList());
                 if(CollectionUtils.isEmpty(canJoinRooms)){
                     roomProfile = createRoom(appId,account);
                 }else{
                     roomProfile = canJoinRooms.get(RandomUtil.nextInt(canJoinRooms.size()));
+                    roomProfile.getPlayerNum().incrementAndGet();
                     Set<AccountProfile> accountSet = roomProfile.getAccounts();
                     accountSet.add(account);
                 }
@@ -101,6 +104,7 @@ public class RoomManager {
         RoomProfile roomProfile = null;
         if(account.isJoinRoom()){
             //todo 离开房间去除用户和房间的关联关系，但是房间需保留用户对象
+            roomProfile.getPlayerNum().decrementAndGet();
             //roomProfile = removeAccount(account.getRoomId(),account);
             account.setRoomId(0);
             account.setRoomProfile(null);
@@ -173,7 +177,7 @@ public class RoomManager {
         return roomProfile;
     }
 
-    private RoomProfile getByRoomId(Long roomId) {
+    public RoomProfile getByRoomId(Long roomId) {
         for(Map.Entry<String,Map<Long,RoomProfile>> entry : appRoomMap.entrySet()){
             if(entry != null && entry.getValue().containsKey(roomId)){
                 return entry.getValue().get(roomId);

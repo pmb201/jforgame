@@ -18,14 +18,11 @@ import lombok.Data;
 @ProtobufClass
 public class ReqUserOption extends Message {
 
-    private long optionTime;
-
     private byte[] optionData;
 
     public UserOption build(long accountId){
         UserOption option = new UserOption();
         option.setAccountId(accountId);
-        option.setDateTime(optionTime);
         option.setOptionData(optionData);
         return option;
     }

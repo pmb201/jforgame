@@ -18,7 +18,5 @@ public class UserOption {
 
     private long accountId;
 
-    private long dateTime;
-
     private byte[] optionData;
 }

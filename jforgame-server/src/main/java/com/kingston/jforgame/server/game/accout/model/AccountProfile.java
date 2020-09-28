@@ -33,9 +33,11 @@ public class AccountProfile {
 
 	private RoomProfile roomProfile;
 
-	private BlockingUniqueQueue<UserOption> userOption = new BlockingUniqueQueue<>();
+	private BlockingUniqueQueue<UserOption> userOptions = new BlockingUniqueQueue<>();
 
 	private int score;
+
+	private UserOption lastUserOption;
 
 	public boolean isJoinRoom() {
 		return this.roomId > 0;

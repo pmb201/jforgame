@@ -4,6 +4,7 @@ import com.baidu.bjf.remoting.protobuf.FieldType;
 import com.baidu.bjf.remoting.protobuf.annotation.Protobuf;
 import com.kingston.jforgame.common.utils.ConcurrentHashSet;
 import com.kingston.jforgame.server.game.accout.model.AccountProfile;
+import com.kingston.jforgame.server.game.collision.CollisionManager;
 import com.kingston.jforgame.server.game.collision.model.UserOption;
 import com.kingston.jforgame.server.redis.RoomIdBuilder;
 import lombok.Data;
@@ -32,6 +33,8 @@ public class RoomProfile {
 
     private AtomicInteger playerNum = new AtomicInteger(0);
 
+    private AtomicInteger frameSeq = new AtomicInteger(1);
+
     /** 玩家列表 **/
     @Protobuf(fieldType = FieldType.OBJECT,order = 3)
     private ConcurrentHashSet<AccountProfile> accounts;
@@ -59,7 +62,7 @@ public class RoomProfile {
     private String gameServer;
 
     /** 全局用户操作记录 **/
-    private List<UserOption> userOptionList ;
+    private List<UserOption> userOptionList;
 
     public RoomProfile(String appId,AccountProfile account){
         this.id = RoomIdBuilder.buildRoomId();
@@ -70,10 +73,17 @@ public class RoomProfile {
         this.status = Status.CREATE.getCode();
         this.timer = false;
         this.appId = appId;
+        if(appId.equals(CollisionManager.appId)){
+            this.maxPlayerNum = 9;
+        }
     }
 
     public boolean isOpen(){
         return this.status == Status.CREATE.getCode();
+    }
+
+    public boolean canJoin(){
+        return this.status == Status.CREATE.getCode() && playerNum.intValue() < maxPlayerNum;
     }
 
     public static enum  Status {
