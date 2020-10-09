@@ -7,19 +7,17 @@ import com.kingston.jforgame.socket.annotation.MessageMeta;
 import com.kingston.jforgame.socket.message.Message;
 import lombok.Data;
 
+import java.util.List;
+
 /**
  * @Author puMengBin
- * @Date 2020-09-27 17:37
+ * @Date 2020-09-29 10:56
  * @Description
  */
-@MessageMeta(module = Modules.COLLISION,cmd = CollisionDataPool.RES_JOIN_ROOM)
-@ProtobufClass
 @Data
-public class ResJoinRoom extends Message {
+@ProtobufClass
+@MessageMeta(module = Modules.COLLISION,cmd = CollisionDataPool.RES_USER_POSITIONS)
+public class ResPlayersPositions extends Message {
 
-    private long accountId;
-
-    private int index;
-
-    //private RoomProfile roomProfile;
+    private List<ResPlayersPosition> playersPositions;
 }

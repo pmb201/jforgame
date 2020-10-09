@@ -11,7 +11,8 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public enum  CollisionError implements IErrorCode {
     USER_NOT_LOGIN(4101,"用户未登陆，不能创建游戏房间"),
-    USER_NOT_IN_GAME(4102,"用户没有在游戏中，不能上报操作数据");
+    USER_NOT_IN_GAME(4102,"用户没有在游戏中，不能上报操作数据"),
+    USER_GAMING(4103,"用户已在游戏中不能再准备");
 
 
     private int code;

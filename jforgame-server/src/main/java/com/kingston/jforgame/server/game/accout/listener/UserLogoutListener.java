@@ -4,9 +4,12 @@ import com.kingston.jforgame.server.game.GameContext;
 import com.kingston.jforgame.server.game.accout.AccountManager;
 import com.kingston.jforgame.server.game.accout.events.AccountLogoutEvent;
 import com.kingston.jforgame.server.game.accout.model.AccountProfile;
+import com.kingston.jforgame.server.game.collision.CollisionManager;
 import com.kingston.jforgame.server.listener.EventType;
 import com.kingston.jforgame.server.listener.annotation.EventHandler;
 import com.kingston.jforgame.server.listener.annotation.Listener;
+
+import java.util.List;
 
 /**
  * @Author puMengBin
@@ -24,6 +27,12 @@ public class UserLogoutListener {
             AccountProfile accountProfile = accountManager.getOnlineUser(logoutEvent.getAccountId());
             accountManager.removeFromOnline(accountProfile);
             accountProfile.setStatus(AccountProfile.Status.OFF_LINE.getCode());
+            List<CollisionManager.AccountId> accountIdList = GameContext.getCollisionManager().accountIds;
+            for(CollisionManager.AccountId accountId : accountIdList){
+                if(accountId.getId() == accountProfile.getId()){
+                    accountId.setUsed(false);
+                }
+            }
         }
     }
 }

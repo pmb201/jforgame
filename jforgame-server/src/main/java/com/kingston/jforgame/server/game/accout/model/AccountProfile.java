@@ -1,9 +1,7 @@
 package com.kingston.jforgame.server.game.accout.model;
 
 import com.baidu.bjf.remoting.protobuf.annotation.Protobuf;
-import com.kingston.jforgame.common.utils.BlockingUniqueQueue;
 import com.kingston.jforgame.server.game.collision.model.UserOption;
-import com.kingston.jforgame.server.game.room.model.RoomProfile;
 import lombok.Data;
 import lombok.Getter;
 import lombok.ToString;
@@ -27,13 +25,9 @@ public class AccountProfile {
 	@Protobuf
 	private String name;
 
-	/** 1,在线；0，离线 **/
+	/** 1,在线；0，离线 ;2,游戏中**/
 	@Protobuf
 	private int status;
-
-	private RoomProfile roomProfile;
-
-	private BlockingUniqueQueue<UserOption> userOptions = new BlockingUniqueQueue<>();
 
 	private int score;
 
@@ -41,6 +35,10 @@ public class AccountProfile {
 
 	public boolean isJoinRoom() {
 		return this.roomId > 0;
+	}
+
+	public boolean isGaming() {
+		return this.roomId > 0 && this.status == Status.GAMING.getCode();
 	}
 
 	public static enum Status{

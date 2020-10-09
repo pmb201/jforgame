@@ -1,21 +1,25 @@
 package com.kingston.jforgame.server.game.collision.message.res;
 
 import com.baidu.bjf.remoting.protobuf.annotation.ProtobufClass;
+import lombok.AllArgsConstructor;
 import lombok.Data;
-
-import java.util.List;
+import lombok.NoArgsConstructor;
 
 /**
  * @Author puMengBin
- * @Date 2020-09-28 16:22
+ * @Date 2020-09-28 20:37
  * @Description
  */
 @Data
 @ProtobufClass
-public class ResUserOptions {
+@NoArgsConstructor
+@AllArgsConstructor
+public class Position {
 
-    private int frameSeq;
+    private float x;
 
-    private List<PlayerOptions> playerOptions;
+    private float y;
+
+    private float z;
 
 }

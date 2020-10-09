@@ -1,11 +1,9 @@
 package com.kingston.jforgame.server.game.room.model;
 
-import com.baidu.bjf.remoting.protobuf.FieldType;
 import com.baidu.bjf.remoting.protobuf.annotation.Protobuf;
-import com.kingston.jforgame.common.utils.ConcurrentHashSet;
+import com.kingston.jforgame.common.utils.BlockingUniqueQueue;
 import com.kingston.jforgame.server.game.accout.model.AccountProfile;
-import com.kingston.jforgame.server.game.collision.CollisionManager;
-import com.kingston.jforgame.server.game.collision.model.UserOption;
+import com.kingston.jforgame.server.game.collision.message.res.ResPlayersPosition;
 import com.kingston.jforgame.server.redis.RoomIdBuilder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -36,8 +34,12 @@ public class RoomProfile {
     private AtomicInteger frameSeq = new AtomicInteger(1);
 
     /** 玩家列表 **/
-    @Protobuf(fieldType = FieldType.OBJECT,order = 3)
-    private ConcurrentHashSet<AccountProfile> accounts;
+    /*@Protobuf(fieldType = FieldType.OBJECT,order = 3)
+    private ConcurrentHashSet<AccountProfile> accounts;*/
+
+    private BlockingUniqueQueue<ResPlayersPosition> userOptions = new BlockingUniqueQueue<>();
+
+    private AccountProfile[] accountProfiles;
 
     /** 房间状态: 0,创建；1,已开始； **/
     @Protobuf(order = 4)
@@ -61,21 +63,28 @@ public class RoomProfile {
     @Protobuf(order = 7)
     private String gameServer;
 
-    /** 全局用户操作记录 **/
-    private List<UserOption> userOptionList;
+    private int index;
 
-    public RoomProfile(String appId,AccountProfile account){
+    /** 全局用户操作记录 **/
+    private List<ResPlayersPosition> userOptionList;
+
+    public RoomProfile(String appId,int maxPlayerNum,AccountProfile account){
         this.id = RoomIdBuilder.buildRoomId();
         this.name = String.valueOf(id);
-        this.accounts = new ConcurrentHashSet<>();
-        accounts.add(account);
+        //this.accounts = new ConcurrentHashSet<>();
+        //accounts.add(account);
         this.createTime = System.currentTimeMillis();
         this.status = Status.CREATE.getCode();
         this.timer = false;
         this.appId = appId;
-        if(appId.equals(CollisionManager.appId)){
-            this.maxPlayerNum = 9;
+        if(maxPlayerNum > 1){
+            this.maxPlayerNum = maxPlayerNum;
+        }else{
+            this.maxPlayerNum = 5;
         }
+        accountProfiles = new AccountProfile[maxPlayerNum];
+        accountProfiles[0] = account;
+        this.playerNum.incrementAndGet();
     }
 
     public boolean isOpen(){
@@ -84,6 +93,41 @@ public class RoomProfile {
 
     public boolean canJoin(){
         return this.status == Status.CREATE.getCode() && playerNum.intValue() < maxPlayerNum;
+    }
+
+    public boolean isEmptyRoom(){
+        if(this == null){
+            return true;
+        }
+        AccountProfile[] accountProfiles = getAccountProfiles();
+        if(accountProfiles == null){
+            return true;
+        }
+        for(AccountProfile accountProfile : accountProfiles){
+            if(accountProfile != null){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean isAllReady(){
+        if(this == null){
+            return false;
+        }
+        AccountProfile[] accountProfiles = getAccountProfiles();
+        if(accountProfiles == null){
+            return false;
+        }
+        for(AccountProfile accountProfile : accountProfiles){
+            if(accountProfile == null){
+                return false;
+            }
+            if(accountProfile.getStatus() != AccountProfile.Status.GAMING.getCode()){
+                return false;
+            }
+        }
+        return true;
     }
 
     public static enum  Status {

@@ -1,15 +1,14 @@
 package com.kingston.jforgame.server.tools;
 
+import com.baidu.bjf.remoting.protobuf.ProtobufIDLGenerator;
+import com.kingston.jforgame.common.utils.ClassScanner;
+import com.kingston.jforgame.socket.message.Message;
+
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.Set;
-
-import com.baidu.bjf.remoting.protobuf.ProtobufIDLGenerator;
-import com.kingston.jforgame.common.utils.ClassScanner;
-import com.kingston.jforgame.server.game.login.message.res.ResAccountLogin;
-import com.kingston.jforgame.socket.message.Message;
 
 /**
  * 导出.proto文件(供客户端用)
@@ -18,7 +17,7 @@ import com.kingston.jforgame.socket.message.Message;
 public class ProtoFileGenerator {
 
 	public static void main(String[] args) {
-		String rootPath = "com.kingston.jforgame.server.game.player.message";
+		String rootPath = "com.kingston.jforgame.server.game.collision.message";
 		Set<Class<?>> messages = ClassScanner.listAllSubclasses(rootPath, Message.class);
 		writeProtoFile(messages);
 	}

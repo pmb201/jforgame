@@ -10,7 +10,7 @@ public class LoginDataPool {
 	
 	//cmd响应协议枚举
 	/** 响应－登录 */
-	public static final byte RES_LOGIN = 51;
+	public static final byte RES_LOGIN = -1;
 	
 	/** 登录失败标识 */
 	public static final int LOGIN_FAIL = 0;

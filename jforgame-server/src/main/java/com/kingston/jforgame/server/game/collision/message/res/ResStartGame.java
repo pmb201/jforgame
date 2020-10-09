@@ -9,17 +9,11 @@ import lombok.Data;
 
 /**
  * @Author puMengBin
- * @Date 2020-09-27 17:37
+ * @Date 2020-09-28 19:53
  * @Description
  */
-@MessageMeta(module = Modules.COLLISION,cmd = CollisionDataPool.RES_JOIN_ROOM)
-@ProtobufClass
 @Data
-public class ResJoinRoom extends Message {
-
-    private long accountId;
-
-    private int index;
-
-    //private RoomProfile roomProfile;
+@ProtobufClass
+@MessageMeta(module = Modules.COLLISION, cmd = CollisionDataPool.RES_START_GAME)
+public class ResStartGame extends Message {
 }

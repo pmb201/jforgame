@@ -1,17 +1,14 @@
 package com.kingston.jforgame.socket.codec.netty;
 
-import io.netty.util.CharsetUtil;
-import org.apache.commons.codec.digest.DigestUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.kingston.jforgame.socket.codec.IMessageEncoder;
 import com.kingston.jforgame.socket.codec.SerializerHelper;
 import com.kingston.jforgame.socket.message.Message;
-
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToByteEncoder;
+import org.apache.commons.codec.digest.DigestUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class NettyProtocolEncoder extends MessageToByteEncoder<Message> {
@@ -42,13 +39,16 @@ public class NettyProtocolEncoder extends MessageToByteEncoder<Message> {
 			out.writeByte(cmd);
 			//写入版本
 			String version = "01.00.01";
+			//out.writeCharSequence(version.subSequence(0,version.length()), CharsetUtil.UTF_8);
 			out.writeBytes(version.getBytes());
 			//写入时间
 			String dateTime = String.valueOf(System.currentTimeMillis());
+			//out.writeCharSequence(dateTime.subSequence(0,dateTime.length()), CharsetUtil.UTF_8);
 			out.writeBytes(dateTime.getBytes());
 			//写入签名
 			String signature = DigestUtils.md5Hex(sb.append(module).append(cmd).append(version).append(dateTime).toString());
 			out.writeBytes(signature.getBytes());
+			//out.writeCharSequence(signature.subSequence(0,signature.length()), CharsetUtil.UTF_8);
 			//写入消息体
 			out.writeBytes(body);
 			//标记交给下一个编码器处理

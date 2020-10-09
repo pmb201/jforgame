@@ -1,25 +1,24 @@
-package com.kingston.jforgame.server.game.collision.message.res;
+package com.kingston.jforgame.server.game.collision.message.req;
 
 import com.baidu.bjf.remoting.protobuf.annotation.ProtobufClass;
 import com.kingston.jforgame.server.game.Modules;
 import com.kingston.jforgame.server.game.collision.CollisionDataPool;
+import com.kingston.jforgame.server.game.collision.message.res.Position;
 import com.kingston.jforgame.socket.annotation.MessageMeta;
 import com.kingston.jforgame.socket.message.Message;
 import lombok.Data;
 
 /**
  * @Author puMengBin
- * @Date 2020-09-27 17:37
+ * @Date 2020-09-28 20:39
  * @Description
  */
-@MessageMeta(module = Modules.COLLISION,cmd = CollisionDataPool.RES_JOIN_ROOM)
-@ProtobufClass
 @Data
-public class ResJoinRoom extends Message {
+@ProtobufClass
+@MessageMeta(module = Modules.COLLISION, cmd = CollisionDataPool.REQ_USER_POSITION)
+public class ReqUserPosition extends Message {
 
-    private long accountId;
+    private Position position;
 
-    private int index;
-
-    //private RoomProfile roomProfile;
+    private double speed;
 }
