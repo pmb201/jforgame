@@ -56,6 +56,9 @@ public class ServerConfig {
 	@Element(required = true)
 	private String redisUrl;
 
+	@Element(required = true)
+	private String qqClient;
+
 	private ServerConfig() {
 	}
 
@@ -161,5 +164,13 @@ public class ServerConfig {
 
 	public void setWebSocketServerPort(int webSocketServerPort) {
 		this.webSocketServerPort = webSocketServerPort;
+	}
+
+	public String getQqClient() {
+		return qqClient;
+	}
+
+	public void setQqClient(String qqClient) {
+		this.qqClient = qqClient;
 	}
 }

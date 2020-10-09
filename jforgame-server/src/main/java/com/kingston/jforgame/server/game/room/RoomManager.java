@@ -90,7 +90,7 @@ public class RoomManager {
         }else{
             roomProfile = getByRoomId(roomId);
             AssertUtil.assertNotNull(roomProfile,RoomErrorCode.ROOM_NOT_EXIST);
-            AssertUtil.assertTrue(roomProfile.getStatus() == RoomProfile.Status.CREATE.getCode(),RoomErrorCode.ROOM_CAN_NOT_JOIN);
+            AssertUtil.assertTrue(roomProfile.getRoomStatus() == RoomProfile.Status.CREATE.getCode(),RoomErrorCode.ROOM_CAN_NOT_JOIN);
             Set<AccountProfile> accountSet = roomProfile.getAccounts();
             accountSet.add(account);
             account.setRoomId(roomProfile.getId());
@@ -116,11 +116,11 @@ public class RoomManager {
         RoomProfile roomProfile = getByRoomId(roomId);
         if(roomProfile != null){
             if(RoomProfile.Status.CREATE.getCode() == status
-                    && roomProfile.getStatus() == RoomProfile.Status.CLOSE.getCode()){
-                roomProfile.setStatus(status);
+                    && roomProfile.getRoomStatus() == RoomProfile.Status.CLOSE.getCode()){
+                roomProfile.setRoomStatus(status);
             }else if(RoomProfile.Status.CLOSE.getCode() == status
-                    && roomProfile.getStatus() == RoomProfile.Status.CREATE.getCode()){
-                roomProfile.setStatus(status);
+                    && roomProfile.getRoomStatus() == RoomProfile.Status.CREATE.getCode()){
+                roomProfile.setRoomStatus(status);
             }
             appRoomMap.get(roomProfile.getAppId()).put(roomProfile.getId(),roomProfile);
         }
@@ -186,7 +186,7 @@ public class RoomManager {
         return null;
     }
 
-    private void removeRoom(Long roomId) {
+    public void removeRoom(Long roomId) {
         for(Map.Entry<String,Map<Long,RoomProfile>> entry : appRoomMap.entrySet()){
             if(entry != null && entry.getValue().containsKey(roomId)){
                 entry.getValue().remove(roomId);

@@ -2,6 +2,12 @@ package com.kingston.jforgame.server.game.collision;
 
 import com.kingston.jforgame.common.utils.AssertUtil;
 import com.kingston.jforgame.common.utils.BlockingUniqueQueue;
+import com.kingston.jforgame.orm.OrmBridge;
+import com.kingston.jforgame.orm.OrmProcessor;
+import com.kingston.jforgame.orm.SqlFactory;
+import com.kingston.jforgame.orm.utils.DbHelper;
+import com.kingston.jforgame.server.db.DbService;
+import com.kingston.jforgame.server.db.DbUtils;
 import com.kingston.jforgame.server.game.GameContext;
 import com.kingston.jforgame.server.game.accout.model.AccountProfile;
 import com.kingston.jforgame.server.game.collision.error.CollisionError;
@@ -14,6 +20,7 @@ import com.kingston.jforgame.server.game.room.model.RoomProfile;
 import com.kingston.jforgame.socket.IdSession;
 import com.kingston.jforgame.socket.session.SessionManager;
 
+import java.sql.SQLException;
 import java.util.*;
 
 /**
@@ -92,10 +99,15 @@ public class CollisionManager {
 
     }
 
-    public void endGame(long roomId){
+    public void endGame(long roomId) throws SQLException {
+
+        //存储房间信息
+        DbService.getInstance().insertOrUpdate(GameContext.getRoomManager().getByRoomId(roomId));
         //todo 销毁房间
+        GameContext.getRoomManager().removeRoom(roomId);
 
         //todo 取消帧同步任务
+
 
     }
 

@@ -4,11 +4,10 @@ import com.baidu.bjf.remoting.protobuf.annotation.Protobuf;
 import com.kingston.jforgame.common.utils.BlockingUniqueQueue;
 import com.kingston.jforgame.server.game.collision.model.UserOption;
 import com.kingston.jforgame.server.game.room.model.RoomProfile;
-import lombok.Data;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
 @ToString
 public class AccountProfile {
 

@@ -93,6 +93,8 @@ public class GameServer {
 		loadSystemRecords();
 		// Redis cache
 		RedisCluster.INSTANCE.init();
+		//初始化entity与对应的ormbridge的映射关系
+		OrmProcessor.INSTANCE.initOrmBridges("com.kingston.jforgame.server");
 		// http admin commands
 		HttpCommandManager.getInstance().initialize(ServerScanPaths.HTTP_ADMIN_PATH);
 
