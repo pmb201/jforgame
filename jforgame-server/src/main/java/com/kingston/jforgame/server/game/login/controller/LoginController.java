@@ -11,7 +11,7 @@ public class LoginController {
 
 	@RequestMapping
 	public void reqAccountLogin(IdSession session, ReqAccountLogin request) throws Exception {
-        GameContext.getLoginManager().handleAccountLogin(session, request.getUnionId(), request.getPassword());
+        GameContext.getLoginManager().handleAccountLogin(session, request);
 	}
 
 

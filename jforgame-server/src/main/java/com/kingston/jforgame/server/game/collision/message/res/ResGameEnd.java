@@ -1,5 +1,6 @@
 package com.kingston.jforgame.server.game.collision.message.res;
 
+import com.baidu.bjf.remoting.protobuf.annotation.Protobuf;
 import com.baidu.bjf.remoting.protobuf.annotation.ProtobufClass;
 import com.kingston.jforgame.server.game.Modules;
 import com.kingston.jforgame.server.game.collision.CollisionDataPool;
@@ -11,13 +12,14 @@ import java.util.List;
 
 /**
  * @Author puMengBin
- * @Date 2020-09-28 11:05
+ * @Date 2020-10-12 15:16
  * @Description
  */
 @Data
 @ProtobufClass
-@MessageMeta(module = Modules.COLLISION,cmd = CollisionDataPool.RES_ADD_SCORE)
-public class ResAddScore extends Message {
+@MessageMeta(module = Modules.COLLISION,cmd = CollisionDataPool.RES_GAME_END)
+public class ResGameEnd extends Message {
 
+    @Protobuf(description = "当前游戏分数排名")
     private List<AccountScore> accountScoreList;
 }

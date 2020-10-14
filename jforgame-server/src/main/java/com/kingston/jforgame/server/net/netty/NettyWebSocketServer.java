@@ -130,6 +130,7 @@ public class NettyWebSocketServer implements ServerNode {
                 }
             });
 
+
             /** 原框架解码解码 */
             pipeline.addLast(new NettyProtocolDecoder(maxReceiveBytes));
 

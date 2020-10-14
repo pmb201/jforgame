@@ -49,4 +49,26 @@ public class CollisionController {
         GameContext.getCollisionManager().ready(session);
     }
 
+    @RequestMapping
+    public void userScore(IdSession session, ReqAddScore reqAddScore){
+        GameContext.getCollisionManager().userScore(session,reqAddScore);
+    }
+
+    @RequestMapping
+    public void userScore(IdSession session, ReqCollision reqCollision){
+        GameContext.getCollisionManager().userCollision(session,reqCollision);
+    }
+
+    @RequestMapping
+    public void userScore(IdSession session, ReqUserTMove reqUserTMove){
+        GameContext.getCollisionManager().userToMove(session,reqUserTMove);
+    }
+
+    @RequestMapping
+    public void userScore(IdSession session, ReqGameEnd reqGameEnd){
+        long accountId = SessionManager.INSTANCE.getAccountIdBy(session);
+        AccountProfile accountProfile = GameContext.getAccountManager().getOnlineUser(accountId);
+        GameContext.getCollisionManager().endGame(accountProfile.getRoomId());
+    }
+
 }

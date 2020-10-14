@@ -8,6 +8,7 @@ import com.kingston.jforgame.socket.session.SessionManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 /**
@@ -49,8 +50,9 @@ public class MessageTask extends AbstractDistributeTask {
 			if (response != null) {
 				session.sendPacket(message);
 			}
-		}catch(Exception e){
-		    Throwable throwable = e.getCause();
+		}catch (IllegalAccessException | IllegalArgumentException
+				| InvocationTargetException e){
+			Throwable throwable = e.getCause();
 			if(throwable instanceof BizException){
 				BizException bizException = (BizException) throwable;
 				ErrorMessage errorMessage = new ErrorMessage(bizException.getErrorCode().code(),bizException.getMessage());

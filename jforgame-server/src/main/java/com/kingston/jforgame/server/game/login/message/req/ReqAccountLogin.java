@@ -5,11 +5,13 @@ import com.kingston.jforgame.server.game.Modules;
 import com.kingston.jforgame.server.game.login.LoginDataPool;
 import com.kingston.jforgame.socket.annotation.MessageMeta;
 import com.kingston.jforgame.socket.message.Message;
+import lombok.Data;
 
 /**
  * 请求－账号登录
  * @author kingston
  */
+@Data
 @MessageMeta(module=Modules.LOGIN, cmd=LoginDataPool.REQ_LOGIN)
 public class ReqAccountLogin extends Message {
 	
@@ -23,21 +25,11 @@ public class ReqAccountLogin extends Message {
 	@Protobuf(order = 3,required = true)
 	private String unionId;
 
-	public long getAccountId() {
-		return accountId;
-	}
+	@Protobuf(order = 4)
+	private String appId;
 
-	public void setAccountId(long playerId) {
-		this.accountId = playerId;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
+	@Protobuf(order = 5)
+	private String code;
 
 	@Override
 	public String toString() {
@@ -45,11 +37,4 @@ public class ReqAccountLogin extends Message {
 				+ password + "]";
 	}
 
-	public String getUnionId() {
-		return unionId;
-	}
-
-	public void setUnionId(String unionId) {
-		this.unionId = unionId;
-	}
 }

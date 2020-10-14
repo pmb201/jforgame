@@ -113,7 +113,7 @@ public class MessageDispatcher implements IMessageDispatcher {
 		//检查是否是登陆
 		if(message instanceof ReqAccountLogin){
 			try {
-				GameContext.getLoginManager().handleAccountLogin(session, ((ReqAccountLogin) message).getUnionId(), ((ReqAccountLogin) message).getPassword());
+				GameContext.getLoginManager().handleAccountLogin(session, ((ReqAccountLogin) message));
 			}catch (Exception e){
 				if(e instanceof BizException){
 					BizException bizException = (BizException) e;

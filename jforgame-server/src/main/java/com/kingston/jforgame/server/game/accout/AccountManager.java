@@ -1,5 +1,8 @@
 package com.kingston.jforgame.server.game.accout;
 
+import com.google.gson.Gson;
+import com.kingston.jforgame.common.utils.HttpUtil;
+import com.kingston.jforgame.server.ServerConfig;
 import com.kingston.jforgame.server.cache.BaseCacheService;
 import com.kingston.jforgame.server.db.DbService;
 import com.kingston.jforgame.server.db.DbUtils;
@@ -7,15 +10,20 @@ import com.kingston.jforgame.server.game.GameContext;
 import com.kingston.jforgame.server.game.accout.entity.Account;
 import com.kingston.jforgame.server.game.accout.events.AccountLogoutEvent;
 import com.kingston.jforgame.server.game.accout.model.AccountProfile;
+import com.kingston.jforgame.server.game.login.message.req.ReqAccountLogin;
+import com.kingston.jforgame.server.game.login.model.QQLoginResult;
 import com.kingston.jforgame.server.listener.EventDispatcher;
 import com.kingston.jforgame.server.listener.EventType;
 import com.kingston.jforgame.server.logs.LoggerUtils;
 import com.kingston.jforgame.server.utils.IdGenerator;
+import com.kingston.jforgame.socket.IdSession;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 public class AccountManager extends BaseCacheService<Long, Account>{
+
+	private static final String APP_SECRET = "";
 
 	private ConcurrentMap<Long, AccountProfile> onlines = new ConcurrentHashMap<>();
 
@@ -23,15 +31,24 @@ public class AccountManager extends BaseCacheService<Long, Account>{
 	private ConcurrentMap<String, Account> accountConcurrentMap = new ConcurrentHashMap<>();
 
 
-	public AccountProfile login(String unionId) throws Exception {
+	public AccountProfile login(IdSession session,ReqAccountLogin reqAccountLogin) throws Exception {
+
+
+		// 调用QQ登录
+		String param = HttpUtil.buildUrlParam("appid",reqAccountLogin.getAppId(),"js_code",reqAccountLogin.getCode(),"secret",APP_SECRET,"grant_type","authorization_code");
+		String url = ServerConfig.getInstance().getQqClient() + "?" + param;
+		String resultJson = HttpUtil.get(url);
+		QQLoginResult qqLoginResult = new Gson().fromJson(resultJson, QQLoginResult.class);
+
+
 		AccountProfile accountProfile = null;
-		Account account = getByUnionId(unionId);
+		Account account = getByUnionId(qqLoginResult.getUnionId());
 		if (account != null) {
 			accountProfile = account.buildProfile();
 		}else{
 			account = new Account();
 			account.setId(IdGenerator.getNextId());
-			account.setUnionId(unionId);
+			account.setUnionId(qqLoginResult.getUnionId());
 			DbService.getInstance().insertOrUpdate(account);
 			accountProfile = account.buildProfile();
 		}

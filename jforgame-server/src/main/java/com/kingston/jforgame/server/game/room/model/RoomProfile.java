@@ -2,13 +2,19 @@ package com.kingston.jforgame.server.game.room.model;
 
 import com.baidu.bjf.remoting.protobuf.annotation.Protobuf;
 import com.kingston.jforgame.common.utils.BlockingUniqueQueue;
+import com.kingston.jforgame.common.utils.DateUtil;
 import com.kingston.jforgame.server.game.accout.model.AccountProfile;
 import com.kingston.jforgame.server.game.collision.message.res.ResPlayersPosition;
+import com.kingston.jforgame.server.game.play.record.entity.PlayRecord;
 import com.kingston.jforgame.server.redis.RoomIdBuilder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -17,13 +23,15 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @Date 2020-09-24 10:54
  * @Description
  */
-@Data
+@Setter
+@Getter
 @ToString
 @NoArgsConstructor
 public class RoomProfile {
 
     @Protobuf(order = 1)
     private long id;
+
     @Protobuf(order = 2)
     private String name;
 
@@ -43,7 +51,7 @@ public class RoomProfile {
 
     /** 房间状态: 0,创建；1,已开始； **/
     @Protobuf(order = 4)
-    private int status;
+    private int roomStatus;
 
     /** 创建时间 **/
     @Protobuf(order = 5)
@@ -74,7 +82,7 @@ public class RoomProfile {
         //this.accounts = new ConcurrentHashSet<>();
         //accounts.add(account);
         this.createTime = System.currentTimeMillis();
-        this.status = Status.CREATE.getCode();
+        this.roomStatus = Status.CREATE.getCode();
         this.timer = false;
         this.appId = appId;
         if(maxPlayerNum > 1){
@@ -88,11 +96,11 @@ public class RoomProfile {
     }
 
     public boolean isOpen(){
-        return this.status == Status.CREATE.getCode();
+        return this.roomStatus == Status.CREATE.getCode();
     }
 
     public boolean canJoin(){
-        return this.status == Status.CREATE.getCode() && playerNum.intValue() < maxPlayerNum;
+        return this.roomStatus == Status.CREATE.getCode() && playerNum.intValue() < maxPlayerNum;
     }
 
     public boolean isEmptyRoom(){
@@ -105,6 +113,22 @@ public class RoomProfile {
         }
         for(AccountProfile accountProfile : accountProfiles){
             if(accountProfile != null){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean isFull(){
+        if(this == null){
+            return false;
+        }
+        AccountProfile[] accountProfiles = getAccountProfiles();
+        if(accountProfiles == null){
+            return false;
+        }
+        for(AccountProfile accountProfile : accountProfiles){
+            if(accountProfile == null){
                 return false;
             }
         }
@@ -128,6 +152,20 @@ public class RoomProfile {
             }
         }
         return true;
+    }
+
+    public PlayRecord buildPlayRecord(){
+        PlayRecord record = new PlayRecord();
+        record.setId(System.currentTimeMillis());
+        record.setAppId(this.appId);
+        record.setCreateTime(DateUtil.format(new Date()));
+        String[] accountIds = Arrays.stream(accountProfiles)
+                .filter(accountProfile -> accountProfile != null)
+                .sorted(Comparator.comparing(AccountProfile::getIntScore).reversed())
+                .map(accountProfile -> accountProfile.getId().toString())
+                .toArray(String[] :: new);
+        record.setAccounts(String.join(",",accountIds));
+        return record;
     }
 
     public static enum  Status {

@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.ToString;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 @Data
 @ToString
 public class AccountProfile {
@@ -29,7 +31,7 @@ public class AccountProfile {
 	@Protobuf
 	private int status;
 
-	private int score;
+	private AtomicInteger score = new AtomicInteger(0);
 
 	private UserOption lastUserOption;
 
@@ -39,6 +41,10 @@ public class AccountProfile {
 
 	public boolean isGaming() {
 		return this.roomId > 0 && this.status == Status.GAMING.getCode();
+	}
+
+	public int getIntScore(){
+		return score.intValue();
 	}
 
 	public static enum Status{

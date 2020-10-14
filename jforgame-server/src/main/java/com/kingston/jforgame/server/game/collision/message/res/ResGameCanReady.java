@@ -7,17 +7,15 @@ import com.kingston.jforgame.socket.annotation.MessageMeta;
 import com.kingston.jforgame.socket.message.Message;
 import lombok.Data;
 
-import java.util.List;
-
 /**
  * @Author puMengBin
- * @Date 2020-09-28 11:05
+ * @Date 2020-10-10 11:11
  * @Description
  */
 @Data
 @ProtobufClass
-@MessageMeta(module = Modules.COLLISION,cmd = CollisionDataPool.RES_ADD_SCORE)
-public class ResAddScore extends Message {
+@MessageMeta(module = Modules.COLLISION,cmd = CollisionDataPool.RES_USER_CAN_READY)
+public class ResGameCanReady extends Message {
 
-    private List<AccountScore> accountScoreList;
+
 }

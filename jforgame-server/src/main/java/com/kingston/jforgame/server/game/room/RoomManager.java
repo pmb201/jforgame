@@ -7,6 +7,7 @@ import com.kingston.jforgame.common.utils.RandomUtil;
 import com.kingston.jforgame.server.game.accout.model.AccountProfile;
 import com.kingston.jforgame.server.game.room.error.RoomErrorCode;
 import com.kingston.jforgame.server.game.room.model.RoomProfile;
+import com.kingston.jforgame.server.logs.LoggerUtils;
 import com.kingston.jforgame.socket.IdSession;
 import com.kingston.jforgame.socket.message.Message;
 import com.kingston.jforgame.socket.session.SessionManager;
@@ -35,7 +36,7 @@ public class RoomManager {
 
     private Map<String, Map<Long,RoomProfile>> appRoomMap = new ConcurrentHashMap<>();
 
-    public RoomProfile createRoom(String appId, AccountProfile account){
+    public RoomProfile createRoom(String appId, int maxPlayerNum,AccountProfile account){
         AssertUtil.assertNotNull(account, RoomErrorCode.ACCOUNT_NOT_EXIST);
         if(isJoinRoom(account)){
             return getByRoomId(account.getRoomId());
@@ -45,7 +46,7 @@ public class RoomManager {
             roomProfiles = new ConcurrentHashMap<>();
         }
 
-        RoomProfile roomProfile = new RoomProfile(appId,2,account);
+        RoomProfile roomProfile = new RoomProfile(appId,maxPlayerNum,account);
         roomProfiles.put(roomProfile.getId(),roomProfile);
         roomProfile.setIndex(0);
         appRoomMap.put(appId,roomProfiles);
@@ -65,7 +66,7 @@ public class RoomManager {
         return userInfo.isJoinRoom() && userInRoom;
     }
 
-    public RoomProfile joinRoom(Long roomId,String appId,AccountProfile account){
+    public RoomProfile joinRoom(Long roomId,String appId,int maxPlayerNum,AccountProfile account){
         if(lock.tryLock()){
             try {
                 if (isJoinRoom(account)) {
@@ -75,14 +76,14 @@ public class RoomManager {
                 if (roomId == null || roomId <= 0) {
                     Map<Long, RoomProfile> appRooms = appRoomMap.get(appId);
                     if (appRooms == null) {
-                        roomProfile = createRoom(appId, account);
+                        roomProfile = createRoom(appId, maxPlayerNum,account);
                     } else {
                         List<RoomProfile> canJoinRooms = appRooms.entrySet().stream()
                                 .filter(appRoomProfile -> appRoomProfile.getValue().canJoin())
                                 .map(appRoomProfile -> appRoomProfile.getValue())
                                 .collect(Collectors.toList());
                         if (CollectionUtils.isEmpty(canJoinRooms)) {
-                            roomProfile = createRoom(appId, account);
+                            roomProfile = createRoom(appId,maxPlayerNum,account);
                         } else {
                             roomProfile = canJoinRooms.get(RandomUtil.nextInt(canJoinRooms.size()));
                             roomProfile.getPlayerNum().incrementAndGet();
@@ -103,7 +104,7 @@ public class RoomManager {
                 } else {
                     roomProfile = getByRoomId(roomId);
                     AssertUtil.assertNotNull(roomProfile, RoomErrorCode.ROOM_NOT_EXIST);
-                    AssertUtil.assertTrue(roomProfile.getStatus() == RoomProfile.Status.CREATE.getCode(), RoomErrorCode.ROOM_CAN_NOT_JOIN);
+                    AssertUtil.assertTrue(roomProfile.getRoomStatus() == RoomProfile.Status.CREATE.getCode(), RoomErrorCode.ROOM_CAN_NOT_JOIN);
                     AccountProfile[] accountProfiles = roomProfile.getAccountProfiles();
                     for (int i = 0; i < accountProfiles.length; i++) {
                         if(accountProfiles[i] == null){
@@ -128,21 +129,33 @@ public class RoomManager {
 
     public RoomProfile leaveRoom(String appId,AccountProfile account){
         RoomProfile roomProfile = null;
-        if(lock.tryLock()){
-            try {
+        try {
+            if(lock.tryLock()){
                 if(account.isJoinRoom()){
-                    //todo 离开房间去除用户和房间的关联关系，但是房间需保留用户对象
-                    roomProfile.getPlayerNum().decrementAndGet();
-                    //roomProfile = removeAccount(account.getRoomId(),account);
-                    account.setRoomId(0);
-                    //account.setRoomProfile(null);
+                    roomProfile = getByRoomId(account.getRoomId());
+                    if(roomProfile.getRoomStatus() == RoomProfile.Status.CREATE.getCode()){
+                        //todo 离开房间去除用户和房间的关联关系，但是房间需保留用户对象
+                        AccountProfile[] accountProfiles = roomProfile.getAccountProfiles();
+                        for (int i = 0; i < accountProfiles.length; i++) {
+                            if(account.getId() == accountProfiles[i].getId()){
+                                accountProfiles[i] = null;
+                                break;
+                            }
+                        }
+                        roomProfile.getPlayerNum().decrementAndGet();
+                        //roomProfile = removeAccount(account.getRoomId(),account);
+                        account.setRoomId(0);
+                        //account.setRoomProfile(null);
+                    }else{
+
+                    }
                 }
                 return roomProfile;
-            }catch (Exception e){
-                e.printStackTrace();
-            }finally {
-                lock.unlock();
             }
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            lock.unlock();
         }
         return null;
     }
@@ -151,11 +164,11 @@ public class RoomManager {
         RoomProfile roomProfile = getByRoomId(roomId);
         if(roomProfile != null){
             if(RoomProfile.Status.CREATE.getCode() == status
-                    && roomProfile.getStatus() == RoomProfile.Status.CLOSE.getCode()){
-                roomProfile.setStatus(status);
+                    && roomProfile.getRoomStatus() == RoomProfile.Status.CLOSE.getCode()){
+                roomProfile.setRoomStatus(status);
             }else if(RoomProfile.Status.CLOSE.getCode() == status
-                    && roomProfile.getStatus() == RoomProfile.Status.CREATE.getCode()){
-                roomProfile.setStatus(status);
+                    && roomProfile.getRoomStatus() == RoomProfile.Status.CREATE.getCode()){
+                roomProfile.setRoomStatus(status);
             }
             appRoomMap.get(roomProfile.getAppId()).put(roomProfile.getId(),roomProfile);
         }
@@ -168,6 +181,7 @@ public class RoomManager {
             AccountProfile[] accountProfiles = roomProfile.getAccountProfiles();
             for(AccountProfile accountProfile : accountProfiles){
                 accountProfile.setRoomId(0);
+                accountProfile.setStatus(AccountProfile.Status.ON_LINE.getCode());
                 //accountProfile.setRoomProfile(null);
             }
             roomProfile.setAccountProfiles(null);
@@ -194,6 +208,7 @@ public class RoomManager {
     public void sendMessageToUser(long accountId,Message message){
         IdSession session = SessionManager.INSTANCE.getSessionBy(accountId);
         if(session != null){
+            LoggerUtils.error("发送消息：{},{}_{}",accountId,message.getModule(),message.getCmd());
             session.sendPacket(message);
         }
     }

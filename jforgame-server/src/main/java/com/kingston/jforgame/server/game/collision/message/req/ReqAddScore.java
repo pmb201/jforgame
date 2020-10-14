@@ -4,6 +4,7 @@ import com.baidu.bjf.remoting.protobuf.annotation.ProtobufClass;
 import com.kingston.jforgame.server.game.Modules;
 import com.kingston.jforgame.server.game.collision.CollisionDataPool;
 import com.kingston.jforgame.socket.annotation.MessageMeta;
+import com.kingston.jforgame.socket.message.Message;
 import lombok.Data;
 
 /**
@@ -14,7 +15,11 @@ import lombok.Data;
 @Data
 @ProtobufClass
 @MessageMeta(module = Modules.COLLISION,cmd = CollisionDataPool.REQ_ADD_SCORE)
-public class ReqAddScore {
+public class ReqAddScore extends Message {
+
+    private int index;
+
+    private long accountId;
 
     private int score;
 }

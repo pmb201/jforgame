@@ -14,6 +14,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
+
 public enum RedisCluster {
 
 	/** 枚举单例 */
@@ -22,6 +23,7 @@ public enum RedisCluster {
 	private JedisCluster cluster;
 
 	private Jedis jedis;
+
 
 	public void init() {
 		String url = ServerConfig.getInstance().getRedisUrl();

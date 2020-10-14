@@ -1,5 +1,7 @@
 # maven ignore
 target/
+<<<<<<< HEAD
+log/
 logs/
 *.jar
 !.mvn/wrapper/*

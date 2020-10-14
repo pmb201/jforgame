@@ -1,18 +1,17 @@
 package com.kingston.jforgame.orm;
 
+import com.kingston.jforgame.common.utils.ClassScanner;
+import com.kingston.jforgame.orm.exception.OrmConfigException;
+import com.kingston.jforgame.orm.utils.StringUtils;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-
-import com.kingston.jforgame.common.utils.ClassScanner;
-import com.kingston.jforgame.orm.exception.OrmConfigException;
-import com.kingston.jforgame.orm.utils.StringUtils;
 
 public enum OrmProcessor {
 
